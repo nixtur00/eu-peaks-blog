@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const peaks = await getCollection('peaks');
+  return peaks.map((peak) => ({
+    params: { slug: peak.slug },
+    props: peak,
+  }));
+}
+
+const peak = Astro.props;
+const { Content } = await peak.render();
+---
+
+<Layout title={`${peak.data.title} - EU Peaks`} description={peak.data.description}>
+  <Navigation />
+  
+  <main class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative bg-gray-900 text-white py-20">
+      <div class="absolute inset-0 bg-black opacity-50"></div>
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <span class="text-blue-400 font-medium">{peak.data.country}</span>
+          <h1 class="text-4xl md:text-5xl font-bold mt-2 mb-4">{peak.data.title}</h1>
+          <p class="text-xl text-gray-300">{peak.data.description}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Peak Details -->
+    <section class="py-8 bg-gray-50 dark:bg-gray-800">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <div class="text-2xl font-bold text-blue-600">{peak.data.elevation}m</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Elevation</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-green-600">{peak.data.difficulty}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Difficulty</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-purple-600">{peak.data.duration}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Duration</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-orange-600">
+              {peak.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Date</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <article class="py-12">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="prose prose-lg dark:prose-invert max-w-none">
+          <Content />
+        </div>
+
+        {peak.data.youtubeUrl && (
+          <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">Watch the Adventure</h2>
+            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+              <a 
+                href={peak.data.youtubeUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              >
+                <div class="text-center">
+                  <div class="text-4xl mb-2">▶️</div>
+                  <div class="font-semibold">Watch on YouTube</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</Layout> 

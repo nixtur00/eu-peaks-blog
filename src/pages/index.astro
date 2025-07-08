@@ -1,16 +1,62 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
 
+const peaks = await getCollection('peaks');
+const featuredPeaks = peaks.filter(peak => peak.data.featured);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="EU Peaks - Documenting Europe's Highest Summits">
+  <Navigation />
+  
+  <main class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+          EU Peaks Adventure
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+          Join me as I document the journey to conquer the highest peak in every European Union country
+        </p>
+        <a href="/peaks" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+          Explore Adventures
+        </a>
+      </div>
+    </section>
+
+    <!-- Featured Peaks -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center mb-12">Featured Adventures</h2>
+        
+        {featuredPeaks.length === 0 ? (
+          <div class="text-center text-gray-600 dark:text-gray-400">
+            <p class="text-lg">Adventures coming soon! Check back for exciting peak conquests.</p>
+          </div>
+        ) : (
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredPeaks.map((peak) => (
+              <a href={`/peaks/${peak.slug}`} class="group">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                  <div class="h-48 bg-gray-200 dark:bg-gray-700"></div>
+                  <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-blue-600 transition-colors">
+                      {peak.data.title}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-2">{peak.data.country}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-500">{peak.data.elevation}m elevation</p>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

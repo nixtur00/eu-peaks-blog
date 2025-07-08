@@ -1,0 +1,242 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="Privacy Policy - EU Peaks Blog"
+  description="Our commitment to your privacy and how we handle data on the EU Peaks Blog"
+>
+  <Navigation />
+  
+  <main class="min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="prose prose-lg dark:prose-invert max-w-none">
+        <h1>Privacy Policy</h1>
+        
+        <p class="lead text-xl text-gray-600 dark:text-gray-300 mb-8">
+          Your privacy matters to us. This policy explains how we collect, use, and protect your information on the EU Peaks Blog.
+        </p>
+
+        <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6 mb-8">
+          <h2 class="text-emerald-800 dark:text-emerald-200 mt-0 mb-4">🔒 Privacy-First Approach</h2>
+          <p class="text-emerald-700 dark:text-emerald-300 mb-0">
+            We believe in your right to privacy. Our blog is designed to be fully accessible without creating an account, 
+            and we collect minimal data only to improve your experience.
+          </p>
+        </div>
+
+        <h2>What We Collect</h2>
+        
+        <h3>📊 Optional Analytics (With Your Consent)</h3>
+        <p>
+          If you choose to accept analytics, we collect <strong>anonymous usage data</strong> to understand how visitors use our site:
+        </p>
+        <ul>
+          <li><strong>Page views:</strong> Which pages you visit (but not who you are)</li>
+          <li><strong>Performance data:</strong> How fast pages load to improve site speed</li>
+          <li><strong>General location:</strong> Country/region only (no precise location)</li>
+          <li><strong>Device type:</strong> Mobile, desktop, or tablet (for responsive design)</li>
+          <li><strong>Referrer:</strong> Which website sent you here (domain only, no full URLs)</li>
+        </ul>
+
+        <h3>🚫 What We DON'T Collect</h3>
+        <ul>
+          <li>Personal information (name, email, address)</li>
+          <li>IP addresses or precise location data</li>
+          <li>Browsing history from other websites</li>
+          <li>Personal files or data from your device</li>
+          <li>Login credentials (we don't have user accounts)</li>
+          <li>Payment information (we don't sell anything)</li>
+        </ul>
+
+        <h2>How We Use Information</h2>
+        
+        <p>The limited data we collect is used only to:</p>
+        <ul>
+          <li><strong>Improve site performance:</strong> Fix slow-loading pages</li>
+          <li><strong>Understand content preferences:</strong> See which peaks interest visitors most</li>
+          <li><strong>Enhance user experience:</strong> Make the site more helpful and accessible</li>
+          <li><strong>Security monitoring:</strong> Detect and prevent abuse or attacks</li>
+        </ul>
+
+        <h2>Your Control & Rights</h2>
+
+        <h3>🎛️ Analytics Control</h3>
+        <p>You have complete control over analytics:</p>
+        <ul>
+          <li><strong>Opt-out anytime:</strong> Use the privacy banner or browser settings</li>
+          <li><strong>No tracking by default:</strong> We don't track you unless you explicitly agree</li>
+          <li><strong>Local storage only:</strong> Preferences stored in your browser, not our servers</li>
+        </ul>
+
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 my-6">
+          <h4 class="text-blue-800 dark:text-blue-200 mt-0 mb-2">Current Analytics Status</h4>
+          <p class="text-blue-700 dark:text-blue-300 mb-3" id="analytics-status">Loading...</p>
+          <div class="flex gap-3">
+            <button 
+              id="opt-in-btn" 
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+            >
+              Enable Analytics
+            </button>
+            <button 
+              id="opt-out-btn" 
+              class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
+            >
+              Disable Analytics
+            </button>
+          </div>
+        </div>
+
+        <h3>🌍 GDPR & International Rights</h3>
+        <p>Regardless of where you're located, you have the right to:</p>
+        <ul>
+          <li><strong>Access:</strong> Know what data we have (spoiler: very little!)</li>
+          <li><strong>Deletion:</strong> Request removal of any data</li>
+          <li><strong>Portability:</strong> Get a copy of your data</li>
+          <li><strong>Correction:</strong> Fix any incorrect information</li>
+          <li><strong>Objection:</strong> Opt out of any data processing</li>
+        </ul>
+
+        <h2>Technical Details</h2>
+
+        <h3>🔐 Security Measures</h3>
+        <ul>
+          <li><strong>HTTPS encryption:</strong> All data transmitted securely</li>
+          <li><strong>No third-party trackers:</strong> No Google Analytics, Facebook pixels, etc.</li>
+          <li><strong>Content Security Policy:</strong> Prevents malicious code injection</li>
+          <li><strong>Rate limiting:</strong> Protects against abuse and attacks</li>
+          <li><strong>Regular security updates:</strong> Keep all systems current</li>
+        </ul>
+
+        <h3>🍪 Cookies & Local Storage</h3>
+        <p>We use minimal browser storage:</p>
+        <ul>
+          <li><strong>Privacy preferences:</strong> Remember your analytics choice</li>
+          <li><strong>Dark mode setting:</strong> Remember your display preference</li>
+          <li><strong>No tracking cookies:</strong> We don't use cookies to track you across sites</li>
+        </ul>
+
+        <h2>Third-Party Services</h2>
+        
+        <p>We use minimal third-party services:</p>
+        <ul>
+          <li><strong>Hosting:</strong> Static site hosting (no server-side data collection)</li>
+          <li><strong>CDN:</strong> Content delivery for faster loading (no personal data)</li>
+          <li><strong>Images:</strong> Some images from Unsplash (governed by their privacy policy)</li>
+        </ul>
+
+        <h2>Children's Privacy</h2>
+        <p>
+          Our site is appropriate for all ages. We don't knowingly collect personal information from anyone, 
+          including children under 13. If you're a parent concerned about your child's privacy, 
+          rest assured that our privacy-first approach protects young visitors.
+        </p>
+
+        <h2>Changes to This Policy</h2>
+        <p>
+          We may update this privacy policy occasionally. Any changes will be posted on this page with 
+          an updated date. We'll never make changes that reduce your privacy without clear notice.
+        </p>
+
+        <h2>Contact Us</h2>
+        <p>
+          Questions about privacy? Contact Nikolay Demerdzhiev through the 
+          <a href="/about" class="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300">about page</a>.
+        </p>
+
+        <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 mt-8">
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-0">
+            <strong>Last updated:</strong> {new Date().toLocaleDateString()}<br>
+            <strong>Effective date:</strong> {new Date().toLocaleDateString()}<br>
+            <strong>Contact:</strong> Nikolay Demerdzhiev, EU Peaks Blog
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  // Analytics control functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const statusElement = document.getElementById('analytics-status');
+    const optInBtn = document.getElementById('opt-in-btn');
+    const optOutBtn = document.getElementById('opt-out-btn');
+    
+    // Update status display
+    function updateStatus() {
+      const isOptedOut = localStorage.getItem('analytics-opt-out') === 'true';
+      if (statusElement) {
+        statusElement.textContent = isOptedOut 
+          ? '❌ Analytics disabled - No data is being collected'
+          : '✅ Analytics enabled - Anonymous usage data is collected';
+      }
+    }
+    
+    // Initialize status
+    updateStatus();
+    
+    // Handle opt-in button
+    optInBtn?.addEventListener('click', () => {
+      localStorage.removeItem('analytics-opt-out');
+      localStorage.setItem('privacy-banner-seen', 'true');
+      updateStatus();
+      alert('Analytics enabled. Anonymous usage data will help improve the site.');
+    });
+    
+    // Handle opt-out button
+    optOutBtn?.addEventListener('click', () => {
+      localStorage.setItem('analytics-opt-out', 'true');
+      localStorage.setItem('privacy-banner-seen', 'true');
+      updateStatus();
+      alert('Analytics disabled. No usage data will be collected.');
+    });
+  });
+</script>
+
+<style>
+  .prose h1 {
+    @apply text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6;
+  }
+  
+  .prose h2 {
+    @apply text-2xl font-semibold text-gray-800 dark:text-gray-200 mt-8 mb-4;
+  }
+  
+  .prose h3 {
+    @apply text-xl font-semibold text-gray-700 dark:text-gray-300 mt-6 mb-3;
+  }
+  
+  .prose h4 {
+    @apply text-lg font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2;
+  }
+  
+  .prose p {
+    @apply text-gray-600 dark:text-gray-400 mb-4 leading-relaxed;
+  }
+  
+  .prose ul {
+    @apply text-gray-600 dark:text-gray-400 mb-4;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  .prose strong {
+    @apply text-gray-800 dark:text-gray-200 font-semibold;
+  }
+  
+  .prose a {
+    @apply text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors;
+  }
+  
+  .prose .lead {
+    @apply text-xl text-gray-600 dark:text-gray-300 mb-8;
+  }
+</style> 

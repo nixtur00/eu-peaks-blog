@@ -1,0 +1,19 @@
+{
+  "name": "EU Peaks Blog",
+  "short_name": "EU Peaks",
+  "description": "Documenting the highest peaks of every EU country",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["travel", "sports", "lifestyle"],
+  "lang": "en-US",
+  "orientation": "portrait-primary"
+} 

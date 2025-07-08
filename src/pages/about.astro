@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="About - EU Peaks">
+  <Navigation />
+  
+  <main class="min-h-screen py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-6">About Us</h1>
+      </div>
+
+      <div class="prose prose-lg dark:prose-invert max-w-none" style="text-wrap: pretty; orphans: 2; widows: 2;">
+        <section class="mb-12">
+          <div class="mb-6 flex justify-center">
+            <img 
+              src="/images/us/IMG_6771.jpeg" 
+              alt="Nikolay and Maria on a mountain adventure" 
+              class="rounded-lg shadow-lg max-w-full h-auto max-h-96 object-cover"
+            />
+          </div>
+          
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">Who We Are</h2>
+          
+          <p>
+            We are Nikolay and Maria, an adventure duo passionate about mountaineering and exploration. As hiking buddies 
+            and travel companions, we're embarking on an ambitious journey to climb the highest peak in each of the 27 
+            European Union member countries. From the towering Alps to the rolling hills of Denmark, each summit represents 
+            a unique challenge and story that we're excited to share with you.
+          </p>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">Our Mission</h2>
+          <p>
+            This blog documents our shared adventure as we work together to conquer Europe's highest peaks. 
+            Each mountain offers its own set of challenges, and we believe that the journey is just as important 
+            as the destination. Through teamwork, perseverance, and a shared love of the outdoors, we're making 
+            memories one summit at a time.
+          </p>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">What You'll Find Here</h2>
+          <ul>
+            <li><strong>Detailed Trip Reports:</strong> In-depth accounts of each climb with route information, conditions, and personal experiences</li>
+            <li><strong>Photography:</strong> High-quality images capturing the beauty and challenge of each peak</li>
+            <li><strong>Video Content:</strong> Links to YouTube videos documenting key moments and summits</li>
+            <li><strong>Practical Information:</strong> Tips, gear recommendations, and logistical advice for fellow adventurers</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">The Adventure Continues</h2>
+          <p>
+            Each peak we conquer together brings new perspectives, challenges overcome, and memories made as a team. 
+            Follow along as we work toward completing this ambitious goal, supporting each other every step of the way, 
+            one summit at a time.
+          </p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* Prevent orphaned words and improve text flow */
+  .prose p,
+  .prose li {
+    text-wrap: balance;
+    text-balance: balance;
+    hyphens: auto;
+    word-spacing: 0.1em;
+    line-height: 1.7;
+  }
+  
+  /* For browsers that support text-wrap: pretty, use it for better line breaking */
+  @supports (text-wrap: pretty) {
+    .prose p,
+    .prose li {
+      text-wrap: pretty;
+    }
+  }
+  
+  /* Additional spacing adjustments */
+  .prose p {
+    margin-bottom: 1.5em;
+  }
+</style> 
