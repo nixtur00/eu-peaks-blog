@@ -37,20 +37,20 @@ const { Content } = await peak.render();
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
-            <div class="text-2xl font-bold text-blue-600">{peak.data.elevation}m</div>
+            <div class="text-2xl font-bold text-blue-600">{peak.data.elevation_m}m</div>
             <div class="text-sm text-gray-600 dark:text-gray-400">Elevation</div>
           </div>
           <div>
-            <div class="text-2xl font-bold text-green-600">{peak.data.difficulty}</div>
+            <div class="text-2xl font-bold text-green-600">{peak.data.difficulty_rating}</div>
             <div class="text-sm text-gray-600 dark:text-gray-400">Difficulty</div>
           </div>
           <div>
-            <div class="text-2xl font-bold text-purple-600">{peak.data.duration}</div>
+            <div class="text-2xl font-bold text-purple-600">{peak.data.duration_hours}h</div>
             <div class="text-sm text-gray-600 dark:text-gray-400">Duration</div>
           </div>
           <div>
             <div class="text-2xl font-bold text-orange-600">
-              {peak.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+              {new Date(peak.data.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
             </div>
             <div class="text-sm text-gray-600 dark:text-gray-400">Date</div>
           </div>
