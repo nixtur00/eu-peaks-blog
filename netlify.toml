@@ -42,12 +42,6 @@
   function = "rate-limit"
   path = "/api/*"
 
-# Redirects for SEO
-[[redirects]]
-  from = "/peaks"
-  to = "/peaks/"
-  status = 301
-
 # 404 page
 [[redirects]]
   from = "/*"

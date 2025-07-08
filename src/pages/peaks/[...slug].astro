@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const peak = Astro.props;
-const { Content } = await peak.render();
+const { Content } = await render(peak);
 ---
 
 <Layout title={`${peak.data.title} - EU Peaks`} description={peak.data.description}>
