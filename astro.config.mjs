@@ -2,10 +2,14 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
+import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), mdx()],
+  
+  // Netlify adapter for server-rendered API routes
+  adapter: netlify(),
   
   // Security configuration
   security: {
@@ -66,8 +70,8 @@ export default defineConfig({
     }
   },
   
-  // Output configuration for static security
-  output: 'static',
+  // Output configuration - hybrid allows both static pages and server-rendered API routes
+  output: 'server',
   
   // Image optimization configuration
   image: {
