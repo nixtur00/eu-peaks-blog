@@ -2,25 +2,26 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { 
-  isRateLimited, 
-  getClientIp, 
-  createErrorResponse, 
+import {
+  isRateLimited,
+  getClientIp,
+  createErrorResponse,
   searchSchema,
-  logSecurityEvent 
+  logSecurityEvent,
 } from '../../utils/security';
 
 export const GET: APIRoute = async ({ request, url }) => {
   try {
     // Rate limiting
     const clientIp = getClientIp(request);
-    if (isRateLimited(clientIp, 50, 10 * 60 * 1000)) { // 50 requests per 10 minutes
+    if (isRateLimited(clientIp, 50, 10 * 60 * 1000)) {
+      // 50 requests per 10 minutes
       logSecurityEvent({
         type: 'rate_limit',
         identifier: clientIp,
-        details: { endpoint: '/api/search' }
+        details: { endpoint: '/api/search' },
       });
-      
+
       return createErrorResponse('Too many requests. Please try again later.', 429, 'RATE_LIMIT');
     }
 
@@ -44,22 +45,22 @@ export const GET: APIRoute = async ({ request, url }) => {
       logSecurityEvent({
         type: 'invalid_input',
         identifier: clientIp,
-        details: { 
+        details: {
           endpoint: '/api/search',
-          error: error instanceof Error ? error.message : 'Unknown validation error'
-        }
+          error: error instanceof Error ? error.message : 'Unknown validation error',
+        },
       });
-      
+
       return createErrorResponse('Invalid search parameters', 400, 'INVALID_INPUT');
     }
 
     // Get all peaks from content collection
     const peaks = await getCollection('peaks');
-    
+
     // Filter peaks based on search criteria
-    const filteredPeaks = peaks.filter((peak) => {
+    const filteredPeaks = peaks.filter(peak => {
       const { data } = peak;
-      
+
       // Text search in title, peak_name, country, and description
       if (validatedInput.query) {
         const searchText = validatedInput.query.toLowerCase();
@@ -68,40 +69,42 @@ export const GET: APIRoute = async ({ request, url }) => {
           data.peak_name,
           data.country,
           data.description || '',
-          ...(data.tags || [])
-        ].join(' ').toLowerCase();
-        
+          ...(data.tags || []),
+        ]
+          .join(' ')
+          .toLowerCase();
+
         if (!searchableContent.includes(searchText)) {
           return false;
         }
       }
-      
+
       // Country filter
       if (validatedInput.country && data.country !== validatedInput.country) {
         return false;
       }
-      
+
       // Difficulty filter
       if (validatedInput.difficulty && data.difficulty_rating !== validatedInput.difficulty) {
         return false;
       }
-      
+
       // Tags filter
       if (validatedInput.tags && validatedInput.tags.length > 0) {
         const peakTags = data.tags || [];
-        const hasMatchingTag = validatedInput.tags.some(tag => 
+        const hasMatchingTag = validatedInput.tags.some(tag =>
           peakTags.some(peakTag => peakTag.toLowerCase().includes(tag.toLowerCase()))
         );
         if (!hasMatchingTag) {
           return false;
         }
       }
-      
+
       return true;
     });
 
     // Prepare response data (only public information)
-    const results = filteredPeaks.map((peak) => ({
+    const results = filteredPeaks.map(peak => ({
       slug: peak.slug,
       title: peak.data.title,
       peak_name: peak.data.peak_name,
@@ -138,21 +141,20 @@ export const GET: APIRoute = async ({ request, url }) => {
         headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=300, s-maxage=600', // 5 min browser, 10 min CDN
-          'Vary': 'Accept-Encoding',
+          Vary: 'Accept-Encoding',
         },
       }
     );
-
   } catch (error) {
     console.error('Search API error:', error);
-    
+
     logSecurityEvent({
       type: 'suspicious_activity',
       identifier: getClientIp(request),
-      details: { 
+      details: {
         endpoint: '/api/search',
-        error: error instanceof Error ? error.message : 'Unknown error'
-      }
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
     });
 
     return createErrorResponse(
@@ -174,4 +176,4 @@ export const PUT: APIRoute = () => {
 
 export const DELETE: APIRoute = () => {
   return createErrorResponse('Method not allowed', 405, 'METHOD_NOT_ALLOWED');
-}; 
+};

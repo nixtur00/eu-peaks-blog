@@ -112,20 +112,11 @@ export function handleApiError(error: unknown, request?: Request): Response {
   if (error instanceof CustomError) {
     appError = error;
   } else if (error instanceof Error) {
-    appError = new CustomError(
-      'An unexpected error occurred',
-      500,
-      'INTERNAL_ERROR',
-      false,
-      { originalError: error.message }
-    );
+    appError = new CustomError('An unexpected error occurred', 500, 'INTERNAL_ERROR', false, {
+      originalError: error.message,
+    });
   } else {
-    appError = new CustomError(
-      'An unknown error occurred',
-      500,
-      'UNKNOWN_ERROR',
-      false
-    );
+    appError = new CustomError('An unknown error occurred', 500, 'UNKNOWN_ERROR', false);
   }
 
   // Log the error
@@ -157,10 +148,10 @@ export function handleApiError(error: unknown, request?: Request): Response {
 // Content error handlers
 export class ContentErrorHandler {
   static handleMissingContent(type: string, identifier: string): string {
-    ErrorLogger.log(
-      new NotFoundError(`${type} not found: ${identifier}`),
-      { contentType: type, identifier }
-    );
+    ErrorLogger.log(new NotFoundError(`${type} not found: ${identifier}`), {
+      contentType: type,
+      identifier,
+    });
 
     return `
       <div class="content-error bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
@@ -180,10 +171,10 @@ export class ContentErrorHandler {
   }
 
   static handleBrokenImage(src: string, alt: string): string {
-    ErrorLogger.log(
-      new CustomError(`Broken image: ${src}`, 404, 'BROKEN_IMAGE'),
-      { imageSrc: src, imageAlt: alt }
-    );
+    ErrorLogger.log(new CustomError(`Broken image: ${src}`, 404, 'BROKEN_IMAGE'), {
+      imageSrc: src,
+      imageAlt: alt,
+    });
 
     return `
       <div class="broken-image bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
@@ -197,10 +188,10 @@ export class ContentErrorHandler {
   }
 
   static handleInvalidContent(type: string, errors: string[]): string {
-    ErrorLogger.log(
-      new ValidationError(`Invalid ${type} content`),
-      { contentType: type, validationErrors: errors }
-    );
+    ErrorLogger.log(new ValidationError(`Invalid ${type} content`), {
+      contentType: type,
+      validationErrors: errors,
+    });
 
     return `
       <div class="validation-error bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
@@ -234,7 +225,7 @@ export class RecoveryUtils {
       return await primaryLoader();
     } catch (primaryError) {
       ErrorLogger.log(primaryError as Error, { recovery: 'attempting_fallback' });
-      
+
       try {
         return await fallbackLoader();
       } catch (fallbackError) {
@@ -259,14 +250,14 @@ export class RecoveryUtils {
     try {
       const keys = path.split('.');
       let current = obj as any;
-      
+
       for (const key of keys) {
-        if (current == null || typeof current !== 'object') {
+        if (current === null || current === undefined || typeof current !== 'object') {
           return fallback;
         }
         current = current[key];
       }
-      
+
       return current ?? fallback;
     } catch {
       return fallback;
@@ -278,31 +269,20 @@ export class RecoveryUtils {
 export function setupGlobalErrorHandling(): void {
   if (typeof window !== 'undefined') {
     // Handle unhandled promise rejections
-    window.addEventListener('unhandledrejection', (event) => {
+    window.addEventListener('unhandledrejection', event => {
       ErrorLogger.log(
-        new CustomError(
-          `Unhandled promise rejection: ${event.reason}`,
-          500,
-          'UNHANDLED_REJECTION'
-        ),
+        new CustomError(`Unhandled promise rejection: ${event.reason}`, 500, 'UNHANDLED_REJECTION'),
         { reason: event.reason }
       );
     });
 
     // Handle uncaught errors
-    window.addEventListener('error', (event) => {
-      ErrorLogger.log(
-        new CustomError(
-          event.message,
-          500,
-          'UNCAUGHT_ERROR'
-        ),
-        {
-          filename: event.filename,
-          lineno: event.lineno,
-          colno: event.colno,
-        }
-      );
+    window.addEventListener('error', event => {
+      ErrorLogger.log(new CustomError(event.message, 500, 'UNCAUGHT_ERROR'), {
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+      });
     });
   }
-} 
+}

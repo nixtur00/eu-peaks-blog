@@ -1,85 +1,144 @@
 ---
-import { getCollection, render } from 'astro:content';
+export const prerender = false;
+
+import { getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
+import YouTubeThumbnail from '../../components/YouTubeThumbnail.astro';
 
-export async function getStaticPaths() {
-  const peaks = await getCollection('peaks');
-  return peaks.map((peak) => ({
-    params: { slug: peak.slug },
-    props: peak,
-  }));
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/peaks');
 }
 
-const peak = Astro.props;
+const peak = await getEntry('peaks', slug as string);
+
+if (!peak) {
+  return Astro.redirect('/404');
+}
+
 const { Content } = await render(peak);
 ---
 
-<Layout title={`${peak.data.title} - EU Peaks`} description={peak.data.description}>
+<Layout title={`${peak.data.title} - 27 Before 27`} description={peak.data.description}>
   <Navigation />
-  
+
   <main class="min-h-screen">
-    <!-- Hero Section -->
-    <section class="relative bg-gray-900 text-white py-20">
-      <div class="absolute inset-0 bg-black opacity-50"></div>
-      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Hero Section with Cover Image -->
+    <section class="relative bg-mountain-900 py-20 lg:py-24 text-white">
+      {
+        peak.data.cover_image && (
+          <div class="absolute inset-0">
+            <Image
+              src={peak.data.cover_image}
+              alt={`${peak.data.title} - Stunning view of ${peak.data.peak_name} in ${peak.data.country}`}
+              width={1920}
+              height={800}
+              class="h-full w-full object-cover"
+              style={peak.data.cover_position ? `object-position: ${peak.data.cover_position.replace(',', '% ') + '%'}` : ''}
+              loading="eager"
+              format="webp"
+            />
+            <div class="absolute inset-0 bg-black/50" />
+          </div>
+        )
+      }
+      {!peak.data.cover_image && <div class="absolute inset-0 hero-gradient" />}
+      
+      <div class="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="text-center">
-          <span class="text-blue-400 font-medium">{peak.data.country}</span>
-          <h1 class="text-4xl md:text-5xl font-bold mt-2 mb-4">{peak.data.title}</h1>
-          <p class="text-xl text-gray-300">{peak.data.description}</p>
+          <span class="font-medium text-summit-300 text-lg">{peak.data.country}</span>
+          <h1 class="mb-4 mt-2 text-4xl font-bold text-white md:text-5xl lg:text-6xl">{peak.data.title}</h1>
+          {peak.data.description && <p class="text-xl text-mountain-100 max-w-3xl mx-auto leading-relaxed">{peak.data.description}</p>}
+
+          <!-- Edit Button (Admin Only) -->
+          <div class="mt-8 admin-only hidden">
+            <a
+              href={`/edit/${peak.slug}`}
+              class="btn-primary"
+            >
+              <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                ></path>
+              </svg>
+              Edit Adventure
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Peak Details -->
-    <section class="py-8 bg-gray-50 dark:bg-gray-800">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+    <section class="bg-mountain-50 dark:bg-mountain-900 py-8 border-b border-mountain-200 dark:border-mountain-700">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 gap-6 text-center md:grid-cols-4">
           <div>
-            <div class="text-2xl font-bold text-blue-600">{peak.data.elevation_m}m</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Elevation</div>
+            <div class="text-3xl font-bold text-summit-600 dark:text-summit-400">{peak.data.elevation_m}m</div>
+            <div class="text-sm text-mountain-600 dark:text-mountain-400 font-medium">Elevation</div>
           </div>
           <div>
-            <div class="text-2xl font-bold text-green-600">{peak.data.difficulty_rating}</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Difficulty</div>
+            <div class="text-3xl font-bold text-earth-600 dark:text-earth-400">{peak.data.difficulty_rating}</div>
+            <div class="text-sm text-mountain-600 dark:text-mountain-400 font-medium">Difficulty</div>
           </div>
           <div>
-            <div class="text-2xl font-bold text-purple-600">{peak.data.duration_hours}h</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Duration</div>
-          </div>
-          <div>
-            <div class="text-2xl font-bold text-orange-600">
-              {new Date(peak.data.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+            <div class="text-3xl font-bold text-forest-600 dark:text-forest-400">
+              {peak.data.duration_hours ? `${peak.data.duration_hours}h` : 'N/A'}
             </div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Date</div>
+            <div class="text-sm text-mountain-600 dark:text-mountain-400 font-medium">Duration</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-fire-600 dark:text-fire-400">
+              {
+                new Date(peak.data.date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  year: 'numeric',
+                })
+              }
+            </div>
+            <div class="text-sm text-mountain-600 dark:text-mountain-400 font-medium">Date</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Content -->
-    <article class="py-12">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="prose prose-lg dark:prose-invert max-w-none">
-          <Content />
+    <article class="content-section">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="prose prose-lg dark:prose-invert max-w-none prose-headings:text-mountain-900 dark:prose-headings:text-mountain-100 prose-p:text-mountain-700 dark:prose-p:text-mountain-300 prose-strong:text-mountain-900 dark:prose-strong:text-mountain-100">
+          {peak.data.content_html ? <div set:html={peak.data.content_html} /> : <Content />}
         </div>
 
-        {peak.data.youtubeUrl && (
-          <div class="mt-12">
-            <h2 class="text-2xl font-bold mb-4">Watch the Adventure</h2>
-            <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
-              <a 
-                href={peak.data.youtubeUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-              >
-                <div class="text-center">
-                  <div class="text-4xl mb-2">▶️</div>
-                  <div class="font-semibold">Watch on YouTube</div>
-                </div>
-              </a>
+        {
+          peak.data.youtubeUrl && (
+            <div class="mt-12">
+              <h2 class="mb-6 text-2xl font-bold text-mountain-900 dark:text-mountain-100">Watch the Adventure</h2>
+              <YouTubeThumbnail 
+                url={peak.data.youtubeUrl} 
+                title={`${peak.data.title} - ${peak.data.country} Adventure`}
+                className="max-w-3xl mx-auto"
+              />
+            </div>
+          )
+        }
+
+
+
+        <!-- Tags -->
+        {peak.data.tags && peak.data.tags.length > 0 && (
+          <div class="mt-8">
+            <div class="flex flex-wrap gap-2">
+              {peak.data.tags.map(tag => (
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-summit-100 dark:bg-summit-900/30 text-summit-800 dark:text-summit-300">
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
         )}
@@ -88,4 +147,189 @@ const { Content } = await render(peak);
   </main>
 
   <Footer />
-</Layout> 
+</Layout>
+
+<script>
+  // Show admin elements only on localhost development
+  document.addEventListener('DOMContentLoaded', () => {
+    const isAdmin =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.search.includes('admin=true');
+
+    if (isAdmin) {
+      const adminElements = document.querySelectorAll('.admin-only');
+      adminElements.forEach(el => {
+        el.classList.remove('hidden');
+      });
+    }
+
+    // Convert YouTube links in content to thumbnails
+    convertYouTubeLinks();
+  });
+
+  function convertYouTubeLinks() {
+    const contentArea = document.querySelector('.prose');
+    if (!contentArea) return;
+
+    // YouTube URL patterns
+    const youtubePatterns = [
+      /https?:\/\/(www\.)?youtube\.com\/watch\?v=([^&\s]+)/g,
+      /https?:\/\/(www\.)?youtu\.be\/([^?\s]+)/g,
+      /https?:\/\/(www\.)?youtube\.com\/embed\/([^?\s]+)/g
+    ];
+
+    // Get all text nodes and links
+    const walker = document.createTreeWalker(
+      contentArea,
+      NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
+      {
+        acceptNode: function(node) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            // Check if text node contains YouTube URL
+            const textContent = node.textContent || '';
+            for (const pattern of youtubePatterns) {
+              if (pattern.test(textContent)) {
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            }
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as HTMLElement;
+            if (element.tagName === 'A') {
+              // Check if link points to YouTube
+              const href = (element as HTMLAnchorElement).href || '';
+              for (const pattern of youtubePatterns) {
+                if (pattern.test(href)) {
+                  return NodeFilter.FILTER_ACCEPT;
+                }
+              }
+            }
+          }
+          return NodeFilter.FILTER_SKIP;
+        }
+      }
+    );
+
+    const nodesToReplace: Node[] = [];
+    let node: Node | null;
+    while (node = walker.nextNode()) {
+      nodesToReplace.push(node);
+    }
+
+    nodesToReplace.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        replaceYouTubeURLsInText(node as Text);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as HTMLElement;
+        if (element.tagName === 'A') {
+          replaceYouTubeLinkElement(element as HTMLAnchorElement);
+        }
+      }
+    });
+  }
+
+  function replaceYouTubeURLsInText(textNode: Text) {
+    const text = textNode.textContent || '';
+    const youtubePatterns = [
+      /https?:\/\/(www\.)?youtube\.com\/watch\?v=([^&\s]+)/g,
+      /https?:\/\/(www\.)?youtu\.be\/([^?\s]+)/g,
+      /https?:\/\/(www\.)?youtube\.com\/embed\/([^?\s]+)/g
+    ];
+
+    let hasYouTubeURL = false;
+    let newHTML = text;
+
+    youtubePatterns.forEach(pattern => {
+      newHTML = newHTML.replace(pattern, (match: string) => {
+        hasYouTubeURL = true;
+        return createYouTubeThumbnailHTML(match);
+      });
+    });
+
+    if (hasYouTubeURL && textNode.parentNode) {
+      const container = document.createElement('div');
+      container.innerHTML = newHTML;
+      textNode.parentNode.replaceChild(container, textNode);
+    }
+  }
+
+  function replaceYouTubeLinkElement(linkElement: HTMLAnchorElement) {
+    const url = linkElement.href;
+    const title = linkElement.textContent?.trim() || '';
+    
+    // Create thumbnail HTML
+    const thumbnailHTML = createYouTubeThumbnailHTML(url, title);
+    const container = document.createElement('div');
+    container.innerHTML = thumbnailHTML;
+    
+    // Replace the link with the thumbnail
+    if (linkElement.parentNode && container.firstChild) {
+      linkElement.parentNode.replaceChild(container.firstChild, linkElement);
+    }
+  }
+
+  function createYouTubeThumbnailHTML(url: string, title: string = '') {
+    const videoId = extractYouTubeVideoId(url);
+    if (!videoId) return url;
+
+    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    const fallbackUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+    return `
+      <div class="youtube-thumbnail-inline my-6 max-w-2xl mx-auto">
+        <div class="relative overflow-hidden rounded-lg bg-black shadow-lg hover:transform hover:scale-[1.02] hover:shadow-xl transition-all duration-300">
+          <a href="${url}" target="_blank" rel="noopener noreferrer" class="block relative group" aria-label="${title ? `Watch ${title} on YouTube` : 'Watch video on YouTube'}">
+            <div class="relative aspect-video">
+              <img src="${thumbnailUrl}" 
+                   alt="${title || 'YouTube video thumbnail'}" 
+                   class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                   loading="lazy"
+                   onerror="this.src='${fallbackUrl}'">
+              
+              <div class="absolute inset-0 bg-black/20 transition-all duration-300 group-hover:bg-black/10"></div>
+              
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="relative">
+                  <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-red-500">
+                    <div class="w-0 h-0 border-l-6 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent ml-1"></div>
+                  </div>
+                  <div class="absolute inset-0 w-16 h-16 bg-red-600 rounded-full animate-ping opacity-20"></div>
+                </div>
+              </div>
+              
+              <div class="absolute top-3 right-3">
+                <svg class="w-8 h-6" viewBox="0 0 90 20" fill="none">
+                  <path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5701 5.35042 27.9727 3.12324Z" fill="#FF0000"/>
+                  <path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"/>
+                </svg>
+              </div>
+            </div>
+            ${title ? `
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+              <h3 class="text-white text-sm font-medium leading-tight line-clamp-2">${title}</h3>
+            </div>
+            ` : ''}
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  function extractYouTubeVideoId(url: string) {
+    const patterns = [
+      /youtube\.com\/watch\?v=([^&]+)/,
+      /youtube\.com\/embed\/([^?]+)/,
+      /youtu\.be\/([^?]+)/,
+      /youtube\.com\/v\/([^?]+)/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) {
+        return match[1];
+      }
+    }
+    
+    return null;
+  }
+</script>

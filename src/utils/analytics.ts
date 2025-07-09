@@ -24,7 +24,7 @@ class PrivacyAnalytics {
   constructor() {
     this.sessionId = this.generateSessionId();
     this.isOptedOut = this.checkOptOutStatus();
-    
+
     // Set up automatic page view tracking
     if (typeof window !== 'undefined' && !this.isOptedOut) {
       this.setupPageViewTracking();
@@ -42,7 +42,7 @@ class PrivacyAnalytics {
   // Check if user has opted out of analytics
   private checkOptOutStatus(): boolean {
     if (typeof window === 'undefined') return true;
-    
+
     // Check localStorage for opt-out preference
     const optOut = localStorage.getItem('analytics-opt-out');
     return optOut === 'true';
@@ -84,8 +84,8 @@ class PrivacyAnalytics {
 
   // Track custom events
   public track(
-    name: string, 
-    category: AnalyticsEvent['category'], 
+    name: string,
+    category: AnalyticsEvent['category'],
     properties?: Record<string, string | number | boolean>
   ): void {
     if (this.isOptedOut) return;
@@ -128,12 +128,16 @@ class PrivacyAnalytics {
 
     // Web Vitals tracking
     if ('performance' in window) {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      
+      const navigation = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
+
       if (navigation) {
         this.track('page_performance', 'performance', {
           load_time: Math.round(navigation.loadEventEnd - navigation.loadEventStart),
-          dom_content_loaded: Math.round(navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart),
+          dom_content_loaded: Math.round(
+            navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart
+          ),
           first_paint: this.getFirstPaint(),
         });
       }
@@ -155,7 +159,7 @@ class PrivacyAnalytics {
 
     // Track navigation in SPAs (if using client-side routing)
     let currentPath = window.location.pathname;
-    
+
     const trackNavigation = () => {
       const newPath = window.location.pathname;
       if (newPath !== currentPath) {
@@ -171,12 +175,12 @@ class PrivacyAnalytics {
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
 
-    history.pushState = function(...args) {
+    history.pushState = function (...args) {
       originalPushState.apply(history, args);
       setTimeout(trackNavigation, 0);
     };
 
-    history.replaceState = function(...args) {
+    history.replaceState = function (...args) {
       originalReplaceState.apply(history, args);
       setTimeout(trackNavigation, 0);
     };
@@ -192,7 +196,7 @@ class PrivacyAnalytics {
     // Track Core Web Vitals if available
     if ('PerformanceObserver' in window) {
       try {
-        const observer = new PerformanceObserver((list) => {
+        const observer = new PerformanceObserver(list => {
           for (const entry of list.getEntries()) {
             if (entry.entryType === 'largest-contentful-paint') {
               this.track('core_web_vital', 'performance', {
@@ -204,7 +208,7 @@ class PrivacyAnalytics {
         });
 
         observer.observe({ entryTypes: ['largest-contentful-paint'] });
-      } catch (error) {
+      } catch {
         // PerformanceObserver not fully supported
         console.warn('PerformanceObserver not supported');
       }
@@ -214,7 +218,7 @@ class PrivacyAnalytics {
   // Get first paint timing
   private getFirstPaint(): number {
     if (typeof window === 'undefined') return 0;
-    
+
     const paintEntries = performance.getEntriesByType('paint');
     const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
     return firstPaint ? Math.round(firstPaint.startTime) : 0;
@@ -223,7 +227,7 @@ class PrivacyAnalytics {
   // Sanitize referrer to remove sensitive data
   private sanitizeReferrer(referrer: string): string {
     if (!referrer) return '';
-    
+
     try {
       const url = new URL(referrer);
       // Only keep the hostname, remove search params and paths
@@ -239,15 +243,17 @@ class PrivacyAnalytics {
   }
 
   // Sanitize event properties
-  private sanitizeProperties(properties?: Record<string, string | number | boolean>): Record<string, string | number | boolean> {
+  private sanitizeProperties(
+    properties?: Record<string, string | number | boolean>
+  ): Record<string, string | number | boolean> {
     if (!properties) return {};
 
     const sanitized: Record<string, string | number | boolean> = {};
-    
+
     for (const [key, value] of Object.entries(properties)) {
       // Only allow safe property names
       const safeKey = key.replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase();
-      
+
       // Ensure values are safe
       if (typeof value === 'string') {
         sanitized[safeKey] = value.slice(0, 100); // Limit string length
@@ -294,7 +300,7 @@ class PrivacyAnalytics {
     } catch (error) {
       // Fail silently for analytics - don't break user experience
       console.warn('Analytics request failed:', error);
-      
+
       // In production, you might want to retry or use a fallback
       if (import.meta.env.DEV) {
         console.log('Analytics events that failed to send:', events);
@@ -324,10 +330,14 @@ export const analytics = new PrivacyAnalytics();
 
 // Convenience functions for common tracking
 export const trackPageView = (path?: string) => analytics.trackPageView(path);
-export const trackPeakView = (peakSlug: string, country: string) => analytics.trackPeakView(peakSlug, country);
-export const trackSearch = (query: string, resultsCount: number) => analytics.trackSearch(query, resultsCount);
-export const trackImageView = (imageType: 'featured' | 'gallery' | 'map') => analytics.trackImageView(imageType);
-export const trackError = (errorType: string, errorCategory: string) => analytics.trackError(errorType, errorCategory);
+export const trackPeakView = (peakSlug: string, country: string) =>
+  analytics.trackPeakView(peakSlug, country);
+export const trackSearch = (query: string, resultsCount: number) =>
+  analytics.trackSearch(query, resultsCount);
+export const trackImageView = (imageType: 'featured' | 'gallery' | 'map') =>
+  analytics.trackImageView(imageType);
+export const trackError = (errorType: string, errorCategory: string) =>
+  analytics.trackError(errorType, errorCategory);
 
 // Privacy controls
 export const optOutOfAnalytics = () => analytics.optOut();
@@ -344,21 +354,21 @@ export const setupAnalytics = () => {
 // GDPR/Privacy compliance helpers
 export const showPrivacyBanner = (): boolean => {
   if (typeof window === 'undefined') return false;
-  
+
   const hasSeenBanner = localStorage.getItem('privacy-banner-seen');
   return !hasSeenBanner;
 };
 
 export const acceptPrivacyPolicy = (): void => {
   if (typeof window === 'undefined') return;
-  
+
   localStorage.setItem('privacy-banner-seen', 'true');
   analytics.optIn();
 };
 
 export const declinePrivacyPolicy = (): void => {
   if (typeof window === 'undefined') return;
-  
+
   localStorage.setItem('privacy-banner-seen', 'true');
   analytics.optOut();
-}; 
+};

@@ -1,0 +1,1261 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  try {
+    const peaks = await getCollection('peaks');
+    return peaks.map(peak => ({
+      params: { slug: peak.slug },
+      props: peak,
+    }));
+  } catch (error) {
+    console.error('Error loading peaks collection:', error);
+    return [];
+  }
+}
+
+const peak = Astro.props;
+
+// Defensive check for peak data
+if (!peak || !peak.data) {
+  throw new Error(`Peak data not found for slug: ${Astro.params.slug}`);
+}
+
+// Format date for HTML input
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0];
+};
+
+// Parse tags array to comma-separated string with null safety
+const tagsString = peak.data.tags && Array.isArray(peak.data.tags) ? peak.data.tags.join(', ') : '';
+
+// Use HTML content from frontmatter if available, otherwise convert markdown
+const rawContent = peak.data.content_html || peak.body || '';
+
+const euCountries = [
+  'Austria',
+  'Belgium',
+  'Bulgaria',
+  'Croatia',
+  'Cyprus',
+  'Czech Republic',
+  'Denmark',
+  'Estonia',
+  'Finland',
+  'France',
+  'Germany',
+  'Greece',
+  'Hungary',
+  'Ireland',
+  'Italy',
+  'Latvia',
+  'Lithuania',
+  'Luxembourg',
+  'Malta',
+  'Netherlands',
+  'Poland',
+  'Portugal',
+  'Romania',
+  'Slovakia',
+  'Slovenia',
+  'Spain',
+  'Sweden',
+];
+
+const difficulties = ['Easy', 'Moderate', 'Hard', 'Expert'];
+---
+
+<Layout title={`Edit: ${peak.data?.title || 'Adventure'} - EU Peaks`}>
+  <Navigation />
+
+  <main class="min-h-screen bg-gray-50 py-12 dark:bg-gray-900">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-8">
+        <h1 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">Edit Adventure</h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Update your peak adventure story and details.
+        </p>
+      </div>
+
+      <form class="space-y-8">
+        <!-- Basic Information -->
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
+            Basic Information
+          </h2>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <label
+                for="title"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Adventure Title *
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                value={peak.data?.title || ''}
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                placeholder="e.g., Mount Teide Summit Adventure"
+              />
+            </div>
+
+            <div>
+              <label
+                for="country"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Country *
+              </label>
+              <select
+                id="country"
+                name="country"
+                required
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              >
+                <option value="">Select a country</option>
+                {
+                  euCountries.map(country => (
+                    <option value={country} selected={peak.data?.country === country}>
+                      {country}
+                    </option>
+                  ))
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-4 grid gap-4 md:grid-cols-3">
+            <div>
+              <label
+                for="elevation"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Elevation (meters) *
+              </label>
+              <input
+                type="number"
+                id="elevation"
+                name="elevation"
+                required
+                value={peak.data?.elevation_m || ''}
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                placeholder="e.g., 3718"
+              />
+            </div>
+
+            <div>
+              <label
+                for="date"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Adventure Date *
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                required
+                value={peak.data?.date ? formatDate(peak.data.date) : ''}
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <label
+                for="difficulty"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Difficulty *
+              </label>
+              <select
+                id="difficulty"
+                name="difficulty"
+                required
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              >
+                {
+                  difficulties.map(difficulty => (
+                    <option
+                      value={difficulty}
+                      selected={peak.data?.difficulty_rating === difficulty}
+                    >
+                      {difficulty}
+                    </option>
+                  ))
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-4 grid gap-4 md:grid-cols-2">
+            <div>
+              <label
+                for="duration_hours"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Duration (hours)
+              </label>
+              <input
+                type="number"
+                id="duration_hours"
+                name="duration_hours"
+                min="0.5"
+                max="168"
+                step="0.5"
+                value={peak.data.duration_hours || ''}
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                placeholder="e.g., 8 or 12.5"
+              />
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Enter duration in hours (e.g., 2, 8, 24)
+              </p>
+            </div>
+
+            <div>
+              <label
+                for="tags"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Tags
+              </label>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                value={tagsString}
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                placeholder="hiking, summit, adventure (comma separated)"
+              />
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <label
+              for="youtubeUrl"
+              class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              YouTube Video URL
+            </label>
+            <input
+              type="url"
+              id="youtubeUrl"
+              name="youtubeUrl"
+              value={peak.data.youtubeUrl || ''}
+              class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="https://www.youtube.com/watch?v=..."
+            />
+          </div>
+
+          <div class="mt-4">
+            <label
+              for="description"
+              class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Short Description (optional)
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows="3"
+              class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Brief description for the adventure list... (optional)"
+              >{peak.data.description || ''}</textarea
+            >
+          </div>
+
+          <div class="mt-4 flex items-center">
+            <input
+              type="checkbox"
+              id="featured"
+              name="featured"
+              checked={peak.data.featured}
+              class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <label for="featured" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+              Mark as featured adventure
+            </label>
+          </div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Images</h2>
+
+          <!-- Current Cover Image -->
+          {
+            peak.data.cover_image && (
+              <div class="mb-6">
+                <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Current Cover Image
+                </label>
+                <div class="relative inline-block">
+                  <img
+                    src={peak.data.cover_image}
+                    alt="Current cover"
+                    class="h-32 w-48 rounded border object-cover"
+                    style={peak.data.cover_position ? `object-position: ${peak.data.cover_position.replace(',', '% ') + '%'}` : ''}
+                    id="current-cover-image"
+                  />
+                  <div class="absolute right-2 top-2">
+                    <button
+                      type="button"
+                      class="rounded-full bg-red-500 p-1 text-xs text-white hover:bg-red-600"
+                      onclick="removeCurrentImage('cover')"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Image Position & Preview
+                  </label>
+                  
+                  <!-- Live preview -->
+                  <div class="mb-4">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">Live Preview (Cover Image 1920x800px)</div>
+                    <div id="current-cover-live-preview" class="relative w-full h-20 bg-gray-200 dark:bg-gray-700 rounded border overflow-hidden">
+                      <div id="current-cover-preview-image" class="absolute inset-0 bg-gray-300 dark:bg-gray-600" style={`background-image: url(${peak.data.cover_image}); background-size: cover; background-position: ${peak.data.cover_position ? peak.data.cover_position.replace(',', '% ') + '%' : '50% 50%'}`}></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Position controls -->
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        Horizontal Position: <span id="current-cover-x-display">{peak.data.cover_position ? peak.data.cover_position.split(',')[0] : '50'}</span>%
+                      </label>
+                      <input 
+                        type="range" 
+                        id="current-cover-position-x" 
+                        min="0" 
+                        max="100" 
+                        value={peak.data.cover_position ? peak.data.cover_position.split(',')[0] : '50'}
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                      />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        Vertical Position: <span id="current-cover-y-display">{peak.data.cover_position ? peak.data.cover_position.split(',')[1] : '50'}</span>%
+                      </label>
+                      <input 
+                        type="range" 
+                        id="current-cover-position-y" 
+                        min="0" 
+                        max="100" 
+                        value={peak.data.cover_position ? peak.data.cover_position.split(',')[1] : '50'}
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                      />
+                    </div>
+                  </div>
+                  
+                  <!-- Reset button -->
+                  <div class="mt-2 text-center">
+                    <button type="button" id="current-cover-reset-position" class="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                      Reset to Center
+                    </button>
+                  </div>
+                  
+                  <input type="hidden" id="current-cover-position" name="cover_position" value={peak.data.cover_position || '50,50'} />
+                </div>
+              </div>
+            )
+          }
+
+          <!-- Cover Image Upload -->
+          <div class="mb-6">
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {peak.data.cover_image ? 'Replace Cover Image' : 'Cover Image'} (appears at top of article)
+            </label>
+            <div
+              class="rounded-lg border-2 border-dashed border-gray-300 p-4 text-center dark:border-gray-600"
+            >
+              <input type="file" id="cover-image-upload" accept="image/*" class="hidden" />
+              <div id="cover-drop-zone" class="cursor-pointer">
+                <svg
+                  class="mx-auto h-8 w-8 text-gray-400"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                >
+                  <path
+                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span class="font-medium">Click to upload cover image</span>
+                </p>
+              </div>
+            </div>
+            <div id="cover-image-preview" class="mt-2"></div>
+          </div>
+
+          <!-- Current Thumbnail Image -->
+          {
+            peak.data.thumbnail_image && (
+              <div class="mb-6">
+                <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Current Thumbnail Image
+                </label>
+                <div class="relative inline-block">
+                  <img
+                    src={peak.data.thumbnail_image}
+                    alt="Current thumbnail"
+                    class="h-32 w-48 rounded border object-cover"
+                    style={peak.data.thumbnail_position ? `object-position: ${peak.data.thumbnail_position.replace(',', '% ') + '%'}` : ''}
+                    id="current-thumbnail-image"
+                  />
+                  <div class="absolute right-2 top-2">
+                    <button
+                      type="button"
+                      class="rounded-full bg-red-500 p-1 text-xs text-white hover:bg-red-600"
+                      onclick="removeCurrentImage('thumbnail')"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Image Position & Preview
+                  </label>
+                  
+                  <!-- Live preview -->
+                  <div class="mb-4">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">Live Preview (Thumbnail 400x300px)</div>
+                    <div id="current-thumbnail-live-preview" class="relative w-32 h-24 bg-gray-200 dark:bg-gray-700 rounded border overflow-hidden mx-auto">
+                      <div id="current-thumbnail-preview-image" class="absolute inset-0 bg-gray-300 dark:bg-gray-600" style={`background-image: url(${peak.data.thumbnail_image}); background-size: cover; background-position: ${peak.data.thumbnail_position ? peak.data.thumbnail_position.replace(',', '% ') + '%' : '50% 50%'}`}></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Position controls -->
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        Horizontal Position: <span id="current-thumbnail-x-display">{peak.data.thumbnail_position ? peak.data.thumbnail_position.split(',')[0] : '50'}</span>%
+                      </label>
+                      <input 
+                        type="range" 
+                        id="current-thumbnail-position-x" 
+                        min="0" 
+                        max="100" 
+                        value={peak.data.thumbnail_position ? peak.data.thumbnail_position.split(',')[0] : '50'}
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                      />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                        Vertical Position: <span id="current-thumbnail-y-display">{peak.data.thumbnail_position ? peak.data.thumbnail_position.split(',')[1] : '50'}</span>%
+                      </label>
+                      <input 
+                        type="range" 
+                        id="current-thumbnail-position-y" 
+                        min="0" 
+                        max="100" 
+                        value={peak.data.thumbnail_position ? peak.data.thumbnail_position.split(',')[1] : '50'}
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                      />
+                    </div>
+                  </div>
+                  
+                  <!-- Reset button -->
+                  <div class="mt-2 text-center">
+                    <button type="button" id="current-thumbnail-reset-position" class="text-xs text-green-600 hover:text-green-800 dark:text-green-400">
+                      Reset to Center
+                    </button>
+                  </div>
+                  
+                  <input type="hidden" id="current-thumbnail-position" name="thumbnail_position" value={peak.data.thumbnail_position || '50,50'} />
+                </div>
+              </div>
+            )
+          }
+
+          <!-- Thumbnail Image Upload -->
+          <div class="mb-6">
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              {peak.data.thumbnail_image ? 'Replace Thumbnail Image' : 'Thumbnail Image'} (appears in
+              post lists)
+            </label>
+            <div
+              class="rounded-lg border-2 border-dashed border-gray-300 p-4 text-center dark:border-gray-600"
+            >
+              <input type="file" id="thumbnail-image-upload" accept="image/*" class="hidden" />
+              <div id="thumbnail-drop-zone" class="cursor-pointer">
+                <svg
+                  class="mx-auto h-8 w-8 text-gray-400"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                >
+                  <path
+                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span class="font-medium">Click to upload thumbnail</span>
+                </p>
+              </div>
+            </div>
+            <div id="thumbnail-image-preview" class="mt-2"></div>
+          </div>
+
+
+        </div>
+
+        <!-- Content Editor -->
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Adventure Story</h2>
+
+          <!-- Rich Text Editor -->
+          <div id="content-editor" style="min-height: 400px;"></div>
+          <textarea id="content-html" name="content" style="display: none;"></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="save-as-draft"
+                name="saveAsDraft"
+                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <label
+                for="save-as-draft"
+                class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+              >
+                Save as draft
+              </label>
+            </div>
+
+            <div class="flex gap-4">
+              <a
+                href={`/peaks/${peak.slug}`}
+                class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+              >
+                Cancel
+              </a>
+              <button
+                type="button"
+                id="preview-btn"
+                class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+              >
+                Preview
+              </button>
+              <button
+                type="submit"
+                class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700"
+              >
+                Update Adventure
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* Quill Editor Sticky Toolbar */
+  .ql-toolbar.ql-snow {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    background: white !important;
+    border-bottom: 2px solid #e5e7eb !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  /* Ensure the editor container allows sticky positioning */
+  #content-editor .ql-container {
+    position: relative !important;
+  }
+
+  /* Quill Editor Dark Mode Support */
+  .dark .ql-toolbar.ql-snow {
+    border-color: #4b5563 !important;
+    background: #374151 !important;
+    border-bottom-color: #4b5563 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .dark .ql-container {
+    border-color: #4b5563 !important;
+    background: #374151 !important;
+    color: #f9fafb !important;
+  }
+
+  .dark .ql-editor {
+    color: #f9fafb !important;
+  }
+
+  .dark .ql-toolbar .ql-stroke {
+    stroke: #f9fafb !important;
+  }
+
+  .dark .ql-toolbar .ql-fill {
+    fill: #f9fafb !important;
+  }
+
+  .dark .ql-toolbar button:hover {
+    background: #4b5563 !important;
+  }
+
+  .dark .ql-toolbar button.ql-active {
+    background: #3b82f6 !important;
+  }
+</style>
+
+<!-- Quill Rich Text Editor -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+<style>
+  .toolbar-btn {
+    @apply rounded border border-gray-300 bg-white px-4 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-500 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500;
+  }
+
+  /* Range slider styling */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-track {
+    background: #d1d5db;
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  .dark input[type="range"]::-webkit-slider-track {
+    background: #374151;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: #2563eb;
+  }
+
+  input[type="range"]::-moz-range-track {
+    background: #d1d5db;
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+  }
+
+  .dark input[type="range"]::-moz-range-track {
+    background: #374151;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  input[type="range"]::-moz-range-thumb:hover {
+    background: #2563eb;
+  }
+
+  .image-preview-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .image-preview-container img {
+    transition: object-position 0.3s ease;
+  }
+
+  #content-editor:empty:before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  #content-editor h2 {
+    @apply mb-3 mt-6 text-xl font-bold text-gray-900 dark:text-white;
+  }
+
+  #content-editor h3 {
+    @apply mb-2 mt-4 text-lg font-semibold text-gray-900 dark:text-white;
+  }
+
+  #content-editor p {
+    @apply mb-4 text-gray-700 dark:text-gray-300;
+  }
+
+  #content-editor ul,
+  #content-editor ol {
+    @apply mb-4 ml-6 text-gray-700 dark:text-gray-300;
+  }
+
+  #content-editor li {
+    @apply mb-1;
+  }
+
+  #content-editor a {
+    @apply text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300;
+  }
+
+  #content-editor strong {
+    @apply font-semibold text-gray-900 dark:text-white;
+  }
+
+  #content-editor em {
+    @apply italic;
+  }
+
+  #content-editor img {
+    @apply rounded-lg shadow-md;
+    max-height: 400px;
+    width: auto;
+    object-fit: contain;
+    margin: 1.5rem auto;
+    display: block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<script define:vars={{ rawContent: rawContent, slug: peak.slug, coverPosition: peak.data.cover_position || 'center', thumbnailPosition: peak.data.thumbnail_position || 'center' }}>
+  // @ts-nocheck
+  // Initialize TinyMCE Editor
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+
+    // Check if content is already HTML or needs conversion from markdown
+    let htmlContent = rawContent;
+
+    // If content looks like markdown (contains ##, **, etc), convert it
+    if (rawContent && !rawContent.includes('<p>') && !rawContent.includes('<h2>')) {
+      htmlContent = rawContent
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .split('\n\n')
+        .map(paragraph => (paragraph.trim() ? `<p>${paragraph}</p>` : ''))
+        .join('')
+        .replace(/<p><h/g, '<h')
+        .replace(/h><\/p>/g, 'h>')
+        .replace(/<p><li>/g, '<ul><li>')
+        .replace(/<\/li><\/p>/g, '</li></ul>');
+    }
+
+    // Initialize Quill editor with custom image handler
+    const quill = new Quill('#content-editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: {
+          container: [
+            [{ header: [2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean'],
+          ],
+          handlers: {
+            image: function() {
+              const input = document.createElement('input');
+              input.setAttribute('type', 'file');
+              input.setAttribute('accept', 'image/*');
+              input.click();
+
+              input.onchange = async () => {
+                const file = input.files[0];
+                if (!file) return;
+
+                // Show loading state
+                const range = quill.getSelection();
+                quill.insertText(range.index, 'Uploading image...', 'italic', true);
+
+                try {
+                  // Upload the image
+                  const formData = new FormData();
+                  formData.append('image', file);
+                  formData.append('type', 'content');
+
+                  const response = await fetch('/api/upload-image', {
+                    method: 'POST',
+                    body: formData,
+                  });
+
+                  const result = await response.json();
+
+                  // Remove loading text
+                  quill.deleteText(range.index, 'Uploading image...'.length);
+
+                  if (result.success) {
+                    // Insert the uploaded image
+                    quill.insertEmbed(range.index, 'image', result.url);
+                    quill.setSelection(range.index + 1);
+                  } else {
+                    quill.insertText(range.index, 'Image upload failed. Please try again.', 'color', 'red');
+                  }
+                } catch (error) {
+                  console.error('Image upload error:', error);
+                  // Remove loading text
+                  quill.deleteText(range.index, 'Uploading image...'.length);
+                  quill.insertText(range.index, 'Image upload failed. Please try again.', 'color', 'red');
+                }
+              };
+            }
+          }
+        }
+      },
+      placeholder: 'Write your adventure story...',
+    });
+
+    // Set content - if we have HTML, use it directly
+    if (htmlContent && htmlContent.trim()) {
+      quill.clipboard.dangerouslyPasteHTML(htmlContent);
+    } else {
+      quill.clipboard.dangerouslyPasteHTML('<p>Start editing your adventure story...</p>');
+    }
+
+    // Update hidden textarea when content changes
+    quill.root.addEventListener('input', () => {
+      const hiddenTextarea = document.getElementById('content-html');
+      if (hiddenTextarea) {
+        hiddenTextarea.value = quill.root.innerHTML;
+      }
+    });
+
+    // Image upload elements
+    const coverImageUpload = document.getElementById('cover-image-upload');
+    const coverDropZone = document.getElementById('cover-drop-zone');
+    const coverImagePreview = document.getElementById('cover-image-preview');
+
+    const thumbnailImageUpload = document.getElementById('thumbnail-image-upload');
+    const thumbnailDropZone = document.getElementById('thumbnail-drop-zone');
+    const thumbnailImagePreview = document.getElementById('thumbnail-image-preview');
+
+    // Image storage
+    let coverImage = null;
+    let thumbnailImage = null;
+
+    // Image upload setup (same setup functions as new-post.astro)
+    function setupImageUpload(
+      uploadInput,
+      dropZone,
+      previewArea,
+      onImageSelected
+    ) {
+      uploadInput.addEventListener('change', e => {
+        const target = e.target;
+        if (target.files) {
+          handleImageFiles(Array.from(target.files), onImageSelected);
+        }
+      });
+
+      dropZone.addEventListener('click', () => uploadInput.click());
+
+      dropZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
+      });
+
+      dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
+        if (e.dataTransfer?.files) {
+          handleImageFiles(Array.from(e.dataTransfer.files), onImageSelected);
+        }
+      });
+    }
+
+    function handleImageFiles(files, onImageSelected) {
+      files.forEach(file => {
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            const result = e.target?.result;
+            if (result) {
+              onImageSelected(file, result);
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    function displaySingleImage(previewArea, file, src, type) {
+      const [x, y] = getImagePosition(type);
+      const objectPosition = getObjectPositionValue(x, y);
+      
+      previewArea.innerHTML = `
+        <div class="image-preview-container relative">
+          <img src="${src}" alt="${file.name}" 
+               class="w-full h-32 object-cover rounded border" 
+               style="object-position: ${objectPosition}"
+               id="${type}-preview-image">
+          <div class="absolute top-2 right-2">
+            <button type="button" class="bg-red-500 text-white p-1 rounded-full text-xs hover:bg-red-600" onclick="removeSingleImage('${type}')">
+              ✕
+            </button>
+          </div>
+          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">${file.name}</p>
+        </div>
+      `;
+      
+      // Add positioning controls after the preview
+      setupNewImagePositioning(type, file, src);
+    }
+
+    function setupNewImagePositioning(type, file, src) {
+      const previewArea = document.getElementById(`${type}-image-preview`);
+      if (!previewArea) return;
+      
+      const img = new Image();
+      img.onload = function() {
+        // Create positioning controls
+        const positioningHTML = `
+          <div class="mt-4">
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Image Position & Preview
+            </label>
+            
+            <!-- Image info display -->
+            <div id="${type}-image-info" class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+              <div class="text-xs">
+                <div>Your image: <span class="font-medium">${img.width}x${img.height}px</span></div>
+                <div>Display size: <span class="font-medium">${type === 'cover' ? '1920x800px' : '400x300px'}</span></div>
+                <div class="text-gray-500">${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)</div>
+              </div>
+            </div>
+            
+            <!-- Live preview -->
+            <div class="mb-4">
+              <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">Live Preview (${type === 'cover' ? 'Cover Image 1920x800px' : 'Thumbnail 400x300px'})</div>
+              <div id="${type}-live-preview" class="relative ${type === 'cover' ? 'w-full h-20' : 'w-32 h-24 mx-auto'} bg-gray-200 dark:bg-gray-700 rounded border overflow-hidden">
+                <div id="${type}-preview-bg" class="absolute inset-0 bg-gray-300 dark:bg-gray-600" style="background-image: url(${src}); background-size: cover; background-position: 50% 50%"></div>
+              </div>
+            </div>
+            
+            <!-- Position controls -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  Horizontal Position: <span id="${type}-x-display">50</span>%
+                </label>
+                <input 
+                  type="range" 
+                  id="${type}-position-x" 
+                  min="0" 
+                  max="100" 
+                  value="50" 
+                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  Vertical Position: <span id="${type}-y-display">50</span>%
+                </label>
+                <input 
+                  type="range" 
+                  id="${type}-position-y" 
+                  min="0" 
+                  max="100" 
+                  value="50" 
+                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                />
+              </div>
+            </div>
+            
+            <!-- Reset button -->
+            <div class="mt-2 text-center">
+              <button type="button" id="${type}-reset-position" class="text-xs text-${type === 'cover' ? 'blue' : 'green'}-600 hover:text-${type === 'cover' ? 'blue' : 'green'}-800 dark:text-${type === 'cover' ? 'blue' : 'green'}-400">
+                Reset to Center
+              </button>
+            </div>
+            
+            <input type="hidden" id="${type}-position" name="${type}_position" value="50,50" />
+          </div>
+        `;
+        
+        previewArea.insertAdjacentHTML('beforeend', positioningHTML);
+        setupImageSliders(type, 50, 50);
+      };
+      img.src = src;
+    }
+
+    function setupImageSliders(type, initialX, initialY) {
+      const xSlider = document.getElementById(`${type}-position-x`);
+      const ySlider = document.getElementById(`${type}-position-y`);
+      const xDisplay = document.getElementById(`${type}-x-display`);
+      const yDisplay = document.getElementById(`${type}-y-display`);
+      const resetBtn = document.getElementById(`${type}-reset-position`);
+      
+      if (!xSlider || !ySlider) return;
+      
+      // Set initial values
+      xSlider.value = initialX.toString();
+      ySlider.value = initialY.toString();
+      if (xDisplay) xDisplay.textContent = initialX.toString();
+      if (yDisplay) yDisplay.textContent = initialY.toString();
+      
+      // Update on slider change
+      const updatePosition = () => {
+        const x = parseInt(xSlider.value);
+        const y = parseInt(ySlider.value);
+        
+        if (xDisplay) xDisplay.textContent = x.toString();
+        if (yDisplay) yDisplay.textContent = y.toString();
+        
+        updateImagePosition(type, x, y);
+      };
+      
+      xSlider.addEventListener('input', updatePosition);
+      ySlider.addEventListener('input', updatePosition);
+      
+      // Reset button
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          xSlider.value = '50';
+          ySlider.value = '50';
+          updatePosition();
+        });
+      }
+      
+      // Initial update
+      updatePosition();
+    }
+
+    function getImagePosition(type) {
+      const input = document.getElementById(`${type}-position`) || document.getElementById(`current-${type}-position`);
+      if (!input || !input.value) return [50, 50];
+      
+      const [x, y] = input.value.split(',').map(v => parseInt(v.trim()) || 50);
+      return [x, y];
+    }
+
+    function getObjectPositionValue(x, y) {
+      return `${x}% ${y}%`;
+    }
+
+    function updateImagePosition(type, x, y) {
+      const input = document.getElementById(`${type}-position`);
+      const previewImage = document.getElementById(`${type}-preview-image`);
+      const livePreviewBg = document.getElementById(`${type}-preview-bg`);
+      
+      // Update hidden input
+      if (input) {
+        input.value = `${x},${y}`;
+      }
+      
+      // Update main preview image
+      if (previewImage) {
+        previewImage.style.objectPosition = getObjectPositionValue(x, y);
+      }
+      
+      // Update live preview
+      if (livePreviewBg) {
+        livePreviewBg.style.backgroundPosition = getObjectPositionValue(x, y);
+      }
+    }
+
+
+
+    // Setup image uploads
+    if (coverImageUpload && coverDropZone && coverImagePreview) {
+      setupImageUpload(coverImageUpload, coverDropZone, coverImagePreview, (file, src) => {
+        coverImage = file;
+        displaySingleImage(coverImagePreview, file, src, 'cover');
+      });
+    }
+
+    if (thumbnailImageUpload && thumbnailDropZone && thumbnailImagePreview) {
+      setupImageUpload(
+        thumbnailImageUpload,
+        thumbnailDropZone,
+        thumbnailImagePreview,
+        (file, src) => {
+          thumbnailImage = file;
+          displaySingleImage(thumbnailImagePreview, file, src, 'thumbnail');
+        }
+      );
+    }
+
+
+
+    // Position controls are now handled by individual slider event listeners
+
+    // Initialize current image position sliders
+    if (document.getElementById('current-cover-image')) {
+      setupCurrentImageSliders('cover', coverPosition);
+    }
+    if (document.getElementById('current-thumbnail-image')) {
+      setupCurrentImageSliders('thumbnail', thumbnailPosition);
+    }
+
+    function setupCurrentImageSliders(type, positionString) {
+      const [x, y] = positionString ? positionString.split(',').map(v => parseInt(v.trim()) || 50) : [50, 50];
+      
+      const xSlider = document.getElementById(`current-${type}-position-x`);
+      const ySlider = document.getElementById(`current-${type}-position-y`);
+      const xDisplay = document.getElementById(`current-${type}-x-display`);
+      const yDisplay = document.getElementById(`current-${type}-y-display`);
+      const resetBtn = document.getElementById(`current-${type}-reset-position`);
+      const input = document.getElementById(`current-${type}-position`);
+      const previewImage = document.getElementById(`current-${type}-preview-image`);
+      const mainImage = document.getElementById(`current-${type}-image`);
+      
+      if (!xSlider || !ySlider) return;
+      
+      // Update displays
+      const updatePosition = () => {
+        const newX = parseInt(xSlider.value);
+        const newY = parseInt(ySlider.value);
+        
+        if (xDisplay) xDisplay.textContent = newX.toString();
+        if (yDisplay) yDisplay.textContent = newY.toString();
+        if (input) input.value = `${newX},${newY}`;
+        
+        const objectPosition = `${newX}% ${newY}%`;
+        if (previewImage) previewImage.style.backgroundPosition = objectPosition;
+        if (mainImage) mainImage.style.objectPosition = objectPosition;
+      };
+      
+      xSlider.addEventListener('input', updatePosition);
+      ySlider.addEventListener('input', updatePosition);
+      
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          xSlider.value = '50';
+          ySlider.value = '50';
+          updatePosition();
+        });
+      }
+    }
+
+    // Global functions for image management
+    window.removeSingleImage = function (type) {
+      if (type === 'cover' && coverImagePreview) {
+        coverImage = null;
+        coverImagePreview.innerHTML = '';
+      } else if (type === 'thumbnail' && thumbnailImagePreview) {
+        thumbnailImage = null;
+        thumbnailImagePreview.innerHTML = '';
+      }
+    };
+
+    window.removeCurrentImage = function (type) {
+      // This would need backend support to actually remove the image
+      console.log('Remove current ' + type + ' image');
+      alert('Current image removal will be handled on save');
+    };
+
+
+
+    // Form submission
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      // Get content from Quill with proper formatting
+      // Try to get semantic HTML, fallback to innerHTML if not available
+      let content;
+      try {
+        content = quill.getSemanticHTML ? quill.getSemanticHTML() : quill.root.innerHTML;
+      } catch {
+        content = quill.root.innerHTML;
+      }
+
+      // Ensure we have proper paragraph breaks by converting divs to paragraphs
+      content = content.replace(/<div([^>]*)>/gi, '<p$1>').replace(/<\/div>/gi, '</p>');
+
+      const draftCheckbox = document.getElementById('save-as-draft');
+      const isDraft = draftCheckbox?.checked || false;
+
+      // Add images to form data
+      if (coverImage) {
+        formData.set('coverImage', coverImage);
+      }
+      if (thumbnailImage) {
+        formData.set('thumbnailImage', thumbnailImage);
+      }
+
+      formData.set('content', content);
+      formData.set('isDraft', isDraft.toString());
+      formData.set('originalSlug', slug); // Add original slug for updating
+
+      // Show loading state
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Updating...';
+      submitBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/update-post', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Redirect to the updated post
+          window.location.href = `/peaks/${result.slug}`;
+        } else {
+          alert(`Error: ${result.message}`);
+        }
+      } catch (error) {
+        console.error('Error updating post:', error);
+        alert('Failed to update post. Please try again.');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Preview functionality - redirect to actual article page
+    const previewBtn = document.getElementById('preview-btn');
+    if (previewBtn) {
+      previewBtn.addEventListener('click', () => {
+        // Redirect to the actual article page
+        window.open(`/peaks/${slug}`, '_blank');
+      });
+    }
+  });
+</script>

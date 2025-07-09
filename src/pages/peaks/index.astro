@@ -1,123 +1,467 @@
 ---
+export const prerender = false;
+
 import Layout from '../../layouts/Layout.astro';
 import Navigation from '../../components/Navigation.astro';
 import Footer from '../../components/Footer.astro';
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 const peaks = await getCollection('peaks');
-const sortedPeaks = peaks.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const sortedPeaks = peaks.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
 
-const euCountries = [
-  'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 
-  'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 
-  'Hungary', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 
-  'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia', 
-  'Slovenia', 'Spain', 'Sweden'
-];
+// Get unique values for filters
+const countries = [...new Set(peaks.map(peak => peak.data.country))].sort();
+const difficulties = [...new Set(peaks.map(peak => peak.data.difficulty_rating))].sort();
+const ascentTypes = [...new Set(peaks.map(peak => peak.data.ascent_type))].sort();
+
+const stats = {
+  total: peaks.length,
+  completed: peaks.filter(peak => !peak.data.draft).length,
+  countries: countries.length,
+  avgElevation: Math.round(peaks.reduce((sum, peak) => sum + peak.data.elevation_m, 0) / peaks.length)
+};
 ---
 
-<Layout title="Adventure Log - EU Peaks">
+<Layout title="Adventure Log - 27 Before 27">
   <Navigation />
-  
-  <main class="min-h-screen py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold mb-4">Adventure Log</h1>
-        <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Every summit tells a story.
-        </p>
+
+  <main class="min-h-screen">
+    <!-- Header Section -->
+    <section class="relative overflow-hidden text-white py-16 lg:py-20">
+      <div class="absolute inset-0">
+        <img 
+          src="/images/IMG_9834.jpeg" 
+          alt="Lush green mountain ridges with dramatic clouds and misty peaks"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/40"></div>
+      </div>
+      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="mb-4 font-bold text-white drop-shadow-lg">Peak Adventures</h1>
+          <p class="mx-auto max-w-3xl text-xl lg:text-2xl text-mountain-100 leading-relaxed">
+            Every summit conquered, every challenge faced. Explore the complete collection of European peak adventures, 
+            from volcanic islands to alpine giants.
+          </p>
+          
+          <!-- Stats -->
+          <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
+            <div class="text-center">
+              <div class="text-2xl lg:text-3xl font-bold text-summit-200">{stats.completed}</div>
+              <div class="text-sm text-mountain-200">Completed</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl lg:text-3xl font-bold text-summit-200">{stats.countries}</div>
+              <div class="text-sm text-mountain-200">Countries</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl lg:text-3xl font-bold text-summit-200">{stats.avgElevation}m</div>
+              <div class="text-sm text-mountain-200">Avg Elevation</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl lg:text-3xl font-bold text-summit-200">{stats.total}</div>
+              <div class="text-sm text-mountain-200">Total Adventures</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="bg-mountain-50 dark:bg-mountain-900 py-8 border-b border-mountain-200 dark:border-mountain-700">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap gap-4 items-end justify-center lg:justify-start">
+          <!-- Search -->
+          <div class="w-full sm:w-auto flex-1 max-w-md">
+            <label for="search" class="block text-sm font-medium text-mountain-700 dark:text-mountain-300 mb-2">
+              Search Adventures
+            </label>
+            <input
+              type="text"
+              id="search"
+              placeholder="Search by peak name or country..."
+              class="w-full rounded-lg border border-mountain-300 dark:border-mountain-600 bg-white dark:bg-mountain-800 px-4 py-2 text-mountain-900 dark:text-mountain-100 focus:border-summit-500 focus:ring-2 focus:ring-summit-500/20 transition-colors"
+            />
+          </div>
+          
+          <!-- Country Filter -->
+          <div class="w-full sm:w-auto min-w-[140px]">
+            <label for="country-filter" class="block text-sm font-medium text-mountain-700 dark:text-mountain-300 mb-2">
+              Country
+            </label>
+            <select
+              id="country-filter"
+              class="w-full rounded-lg border border-mountain-300 dark:border-mountain-600 bg-white dark:bg-mountain-800 px-4 py-2 text-mountain-900 dark:text-mountain-100 focus:border-summit-500 focus:ring-2 focus:ring-summit-500/20"
+            >
+              <option value="">All Countries</option>
+              {countries.map(country => <option value={country}>{country}</option>)}
+            </select>
+          </div>
+          
+          <!-- Difficulty Filter -->
+          <div class="w-full sm:w-auto min-w-[120px]">
+            <label for="difficulty-filter" class="block text-sm font-medium text-mountain-700 dark:text-mountain-300 mb-2">
+              Difficulty
+            </label>
+            <select
+              id="difficulty-filter"
+              class="w-full rounded-lg border border-mountain-300 dark:border-mountain-600 bg-white dark:bg-mountain-800 px-4 py-2 text-mountain-900 dark:text-mountain-100 focus:border-summit-500 focus:ring-2 focus:ring-summit-500/20"
+            >
+              <option value="">All Levels</option>
+              {difficulties.map(difficulty => <option value={difficulty}>{difficulty}</option>)}
+            </select>
+          </div>
+          
+          <!-- Sort -->
+          <div class="w-full sm:w-auto min-w-[140px]">
+            <label for="sort-filter" class="block text-sm font-medium text-mountain-700 dark:text-mountain-300 mb-2">
+              Sort By
+            </label>
+            <select
+              id="sort-filter"
+              class="w-full rounded-lg border border-mountain-300 dark:border-mountain-600 bg-white dark:bg-mountain-800 px-4 py-2 text-mountain-900 dark:text-mountain-100 focus:border-summit-500 focus:ring-2 focus:ring-summit-500/20"
+            >
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="elevation-desc">Highest First</option>
+              <option value="elevation-asc">Lowest First</option>
+              <option value="name-asc">A-Z</option>
+            </select>
+          </div>
+          
+          <!-- Clear Filters -->
+          <div class="w-full sm:w-auto">
+            <button
+              id="clear-filters"
+              class="w-full btn-secondary mt-6 sm:mt-0"
+            >
+              Clear Filters
+            </button>
+          </div>
+        </div>
         
-        <div class="mt-8 w-full">
-          <img 
-            src="/images/log/CP108574.JPG" 
-            alt="Mountain adventure scene" 
-            class="w-full h-80 md:h-96 lg:h-[28rem] object-cover rounded-lg shadow-lg"
-          />
+        <!-- Active Filters Display -->
+        <div id="active-filters" class="mt-4 flex flex-wrap gap-2 hidden">
+          <!-- Active filter tags will be inserted here by JavaScript -->
         </div>
       </div>
+    </section>
 
-      <!-- Country Selector -->
-      <div class="mb-8 flex justify-center">
-        <div class="w-full max-w-md">
-          <label for="country-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Filter by Country
-          </label>
-          <select 
-            id="country-select" 
-            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-          >
-            <option value="">All EU Countries</option>
-            {euCountries.map((country) => (
-              <option value={country}>{country}</option>
-            ))}
-          </select>
+    <!-- Adventures Grid -->
+    <section class="content-section">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <!-- Results Info -->
+        <div class="mb-8 flex items-center justify-between">
+          <div>
+            <span id="results-count" class="text-mountain-700 dark:text-mountain-300">
+              Showing {sortedPeaks.length} adventure{sortedPeaks.length !== 1 ? 's' : ''}
+            </span>
+          </div>
         </div>
-      </div>
 
-      {sortedPeaks.length === 0 ? (
-        <div class="text-center py-16">
-          <h2 class="text-2xl font-semibold mb-4">No adventures yet</h2>
-          <p class="text-gray-600 dark:text-gray-400">
-            The journey is just beginning. Adventures will be documented here as they happen.
+        {
+          sortedPeaks.length === 0 ? (
+            <div class="text-center py-16">
+              <div class="mx-auto mb-6 w-24 h-24 rounded-full bg-mountain-100 dark:bg-mountain-800 flex items-center justify-center">
+                <svg class="w-12 h-12 text-mountain-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l5.586 5.586a2 2 0 002.828 0L19 3m-7 7v6m-2 4h4"></path>
+                </svg>
+              </div>
+              <h2 class="text-2xl font-semibold mb-4 text-mountain-900 dark:text-mountain-100">No Adventures Yet</h2>
+              <p class="text-mountain-600 dark:text-mountain-400 max-w-md mx-auto">
+                The journey is just beginning. Adventures will be documented here as they unfold across Europe's highest peaks.
+              </p>
+            </div>
+          ) : (
+            <div id="adventures-grid" class="grid-cards">
+              {sortedPeaks.map(peak => (
+                <article class="peak-card group" 
+                         data-country={peak.data.country} 
+                         data-difficulty={peak.data.difficulty_rating}
+                         data-elevation={peak.data.elevation_m}
+                         data-date={peak.data.date}
+                         data-name={peak.data.title.toLowerCase()}>
+                  <a href={`/peaks/${peak.slug}`} class="block">
+                    <div class="card overflow-hidden group-hover:shadow-card-lg transition-all duration-300">
+                                                                    {peak.data.thumbnail_image ? (
+                         <div class="relative h-48 lg:h-56 overflow-hidden">
+                           <Image
+                             src={peak.data.thumbnail_image as string}
+                             alt={`${peak.data.title} - ${peak.data.country} peak at ${peak.data.elevation_m}m elevation`}
+                             width={400}
+                             height={300}
+                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                             style={peak.data.thumbnail_position ? `object-position: ${peak.data.thumbnail_position.replace(',', '% ') + '%'}` : ''}
+                             loading="lazy"
+                             format="webp"
+                           />
+                          <div class="image-overlay"></div>
+                          <!-- Badges -->
+                          <div class="absolute top-4 left-4 flex gap-2">
+                            <span class="text-xs font-medium bg-black/70 text-white px-2 py-1 rounded">
+                              {peak.data.elevation_m}m
+                            </span>
+                            {peak.data.featured && (
+                              <span class="text-xs font-medium bg-earth-500 text-white px-2 py-1 rounded">
+                                Featured
+                              </span>
+                            )}
+                          </div>
+                          <!-- Date -->
+                          <div class="absolute bottom-4 right-4 text-white">
+                            <span class="text-sm bg-black/50 px-2 py-1 rounded">
+                              {new Date(peak.data.date).toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                year: 'numeric' 
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div class="h-48 lg:h-56 bg-gradient-to-br from-mountain-200 to-mountain-300 dark:from-mountain-700 dark:to-mountain-800 flex items-center justify-center relative">
+                          <svg class="w-16 h-16 text-mountain-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3l5.586 5.586a2 2 0 002.828 0L19 3m-7 7v6m-2 4h4"></path>
+                          </svg>
+                          <div class="absolute top-4 left-4">
+                            <span class="text-xs font-medium bg-black/50 text-white px-2 py-1 rounded">
+                              {peak.data.elevation_m}m
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div class="card-content">
+                        <!-- Country & Difficulty -->
+                        <div class="flex items-center justify-between mb-3">
+                          <span class="text-summit-600 dark:text-summit-400 font-medium text-sm">
+                            {peak.data.country}
+                          </span>
+                          <span class="text-xs bg-mountain-100 dark:bg-mountain-700 text-mountain-700 dark:text-mountain-300 px-2 py-1 rounded">
+                            {peak.data.difficulty_rating}
+                          </span>
+                        </div>
+                        
+                        <!-- Title -->
+                        <h3 class="text-xl font-semibold mb-3 group-hover:text-summit-600 transition-colors">
+                          {peak.data.title}
+                        </h3>
+                        
+                        <!-- Description -->
+                        {peak.data.description && (
+                          <p class="text-sm text-mountain-600 dark:text-mountain-400 mb-4 line-clamp-2">
+                            {peak.data.description.length > 120
+                              ? peak.data.description.substring(0, 120) + '...'
+                              : peak.data.description}
+                          </p>
+                        )}
+                        
+                        <!-- Meta Info -->
+                        <div class="flex items-center justify-between text-sm text-mountain-500 dark:text-mountain-500">
+                          <div class="flex items-center gap-3">
+                            {peak.data.duration_hours && (
+                              <span class="flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                {peak.data.duration_hours}h
+                              </span>
+                            )}
+                            <span class="flex items-center gap-1">
+                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l5.586 5.586a2 2 0 002.828 0L19 3"></path>
+                              </svg>
+                              {peak.data.ascent_type}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              ))}
+            </div>
+          )
+        }
+        
+        <!-- No Results Message -->
+        <div id="no-results" class="text-center py-16 hidden">
+          <div class="mx-auto mb-6 w-16 h-16 rounded-full bg-mountain-100 dark:bg-mountain-800 flex items-center justify-center">
+            <svg class="w-8 h-8 text-mountain-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2 text-mountain-900 dark:text-mountain-100">No Adventures Found</h3>
+          <p class="text-mountain-600 dark:text-mountain-400">
+            Try adjusting your filters or search terms to find more adventures.
           </p>
         </div>
-      ) : (
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedPeaks.map((peak) => (
-            <a href={`/peaks/${peak.slug}`} class="group">
-              <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div class="h-48 bg-gray-200 dark:bg-gray-700"></div>
-                <div class="p-6">
-                  <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm font-medium text-blue-600 dark:text-blue-400">
-                      {peak.data.country}
-                    </span>
-                    <span class="text-sm text-gray-500">
-                      {new Date(peak.data.date).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600 transition-colors">
-                    {peak.data.title}
-                  </h2>
-                  <p class="text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                    {peak.data.description}
-                  </p>
-                  <div class="flex items-center justify-between text-sm text-gray-500">
-                    <span>{peak.data.elevation_m}m</span>
-                    <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                      {peak.data.difficulty_rating}
-                    </span>
-                  </div>
-                </div>
-              </article>
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
+      </div>
+    </section>
   </main>
 
   <Footer />
 </Layout>
 
 <script>
-  // Country selector functionality
+  interface PeakCard {
+    element: HTMLElement;
+    country: string;
+    difficulty: string;
+    elevation: number;
+    date: string;
+    name: string;
+  }
+
+  // Enhanced filtering functionality
   document.addEventListener('DOMContentLoaded', () => {
-    const countrySelect = document.getElementById('country-select') as HTMLSelectElement;
-    
-    if (countrySelect) {
-      countrySelect.addEventListener('change', (event) => {
-        const selectedCountry = (event.target as HTMLSelectElement).value;
-        
-        if (selectedCountry) {
-          console.log(`Selected country: ${selectedCountry}`);
-          // TODO: Implement filtering logic when articles are available
-          // This will filter and display articles for the selected country
-        } else {
-          console.log('Show all countries');
-          // TODO: Show all articles
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const countryFilter = document.getElementById('country-filter') as HTMLSelectElement;
+    const difficultyFilter = document.getElementById('difficulty-filter') as HTMLSelectElement;
+    const sortFilter = document.getElementById('sort-filter') as HTMLSelectElement;
+    const clearFiltersBtn = document.getElementById('clear-filters') as HTMLButtonElement;
+    const adventuresGrid = document.getElementById('adventures-grid') as HTMLElement;
+    const noResults = document.getElementById('no-results') as HTMLElement;
+    const resultsCount = document.getElementById('results-count') as HTMLElement;
+    const activeFilters = document.getElementById('active-filters') as HTMLElement;
+
+    const peakCards: PeakCard[] = Array.from(document.querySelectorAll('.peak-card')).map(el => ({
+      element: el as HTMLElement,
+      country: el.getAttribute('data-country') || '',
+      difficulty: el.getAttribute('data-difficulty') || '',
+      elevation: parseInt(el.getAttribute('data-elevation') || '0'),
+      date: el.getAttribute('data-date') || '',
+      name: el.getAttribute('data-name') || ''
+    }));
+
+    let filteredCards = [...peakCards];
+
+    function applyFilters() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedCountry = countryFilter.value;
+      const selectedDifficulty = difficultyFilter.value;
+
+      filteredCards = peakCards.filter(card => {
+        const matchesSearch = !searchTerm || 
+          card.name.includes(searchTerm) || 
+          card.country.toLowerCase().includes(searchTerm);
+        const matchesCountry = !selectedCountry || card.country === selectedCountry;
+        const matchesDifficulty = !selectedDifficulty || card.difficulty === selectedDifficulty;
+
+        return matchesSearch && matchesCountry && matchesDifficulty;
+      });
+
+      applySorting();
+      updateDisplay();
+      updateActiveFilters();
+    }
+
+    function applySorting() {
+      const sortBy = sortFilter.value;
+      
+      filteredCards.sort((a, b) => {
+        switch (sortBy) {
+          case 'date-desc':
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          case 'date-asc':
+            return new Date(a.date).getTime() - new Date(b.date).getTime();
+          case 'elevation-desc':
+            return b.elevation - a.elevation;
+          case 'elevation-asc':
+            return a.elevation - b.elevation;
+          case 'name-asc':
+            return a.name.localeCompare(b.name);
+          default:
+            return 0;
         }
       });
     }
+
+    function updateDisplay() {
+      // Hide all cards
+      peakCards.forEach(card => {
+        card.element.style.display = 'none';
+      });
+
+      // Show filtered cards in order
+      filteredCards.forEach((card, index) => {
+        card.element.style.display = 'block';
+        card.element.style.order = index.toString();
+      });
+
+      // Update results count
+      const count = filteredCards.length;
+      resultsCount.textContent = `Showing ${count} adventure${count !== 1 ? 's' : ''}`;
+
+      // Show/hide no results message
+      if (count === 0) {
+        adventuresGrid.style.display = 'none';
+        noResults.classList.remove('hidden');
+      } else {
+        adventuresGrid.style.display = 'grid';
+        noResults.classList.add('hidden');
+      }
+    }
+
+    function updateActiveFilters() {
+      const filters = [];
+      
+      if (searchInput.value) filters.push({ type: 'search', value: searchInput.value, label: `Search: "${searchInput.value}"` });
+      if (countryFilter.value) filters.push({ type: 'country', value: countryFilter.value, label: `Country: ${countryFilter.value}` });
+      if (difficultyFilter.value) filters.push({ type: 'difficulty', value: difficultyFilter.value, label: `Difficulty: ${difficultyFilter.value}` });
+
+      if (filters.length > 0) {
+        activeFilters.classList.remove('hidden');
+        activeFilters.innerHTML = filters.map(filter => 
+          `<span class="inline-flex items-center gap-1 bg-summit-100 text-summit-800 text-sm px-3 py-1 rounded-full">
+            ${filter.label}
+            <button class="hover:bg-summit-200 rounded-full p-0.5 transition-colors" onclick="clearFilter('${filter.type}')">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </span>`
+        ).join('');
+      } else {
+        activeFilters.classList.add('hidden');
+      }
+    }
+
+    function clearAllFilters() {
+      searchInput.value = '';
+      countryFilter.value = '';
+      difficultyFilter.value = '';
+      sortFilter.value = 'date-desc';
+      applyFilters();
+    }
+
+    // Make clearFilter available globally for inline onclick handlers
+    (window as any).clearFilter = (type: string) => {
+      switch (type) {
+        case 'search':
+          searchInput.value = '';
+          break;
+        case 'country':
+          countryFilter.value = '';
+          break;
+        case 'difficulty':
+          difficultyFilter.value = '';
+          break;
+      }
+      applyFilters();
+    };
+
+    // Event listeners
+    searchInput.addEventListener('input', applyFilters);
+    countryFilter.addEventListener('change', applyFilters);
+    difficultyFilter.addEventListener('change', applyFilters);
+    sortFilter.addEventListener('change', applySorting);
+    sortFilter.addEventListener('change', updateDisplay);
+    clearFiltersBtn.addEventListener('click', clearAllFilters);
+
+    // Initial display
+    updateDisplay();
   });
-</script> 
+</script>

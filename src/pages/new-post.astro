@@ -4,11 +4,33 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 
 const euCountries = [
-  'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 
-  'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 
-  'Hungary', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 
-  'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia', 
-  'Slovenia', 'Spain', 'Sweden'
+  'Austria',
+  'Belgium',
+  'Bulgaria',
+  'Croatia',
+  'Cyprus',
+  'Czech Republic',
+  'Denmark',
+  'Estonia',
+  'Finland',
+  'France',
+  'Germany',
+  'Greece',
+  'Hungary',
+  'Ireland',
+  'Italy',
+  'Latvia',
+  'Lithuania',
+  'Luxembourg',
+  'Malta',
+  'Netherlands',
+  'Poland',
+  'Portugal',
+  'Romania',
+  'Slovakia',
+  'Slovenia',
+  'Spain',
+  'Sweden',
 ];
 
 const difficulties = ['Easy', 'Moderate', 'Hard', 'Expert'];
@@ -16,156 +38,179 @@ const difficulties = ['Easy', 'Moderate', 'Hard', 'Expert'];
 
 <Layout title="Create New Adventure - EU Peaks">
   <Navigation />
-  
+
   <main class="min-h-screen py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Create New Adventure</h1>
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 text-center">
+        <h1 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white">Create New Adventure</h1>
         <p class="text-gray-600 dark:text-gray-400">Document your latest peak adventure</p>
       </div>
 
       <form id="adventure-form" class="space-y-6">
         <!-- Basic Information -->
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Basic Information</h2>
-          
-          <div class="grid md:grid-cols-2 gap-4">
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
+            Basic Information
+          </h2>
+
+          <div class="grid gap-4 md:grid-cols-2">
             <div>
-              <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                for="title"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Peak Name *
               </label>
-              <input 
-                type="text" 
-                id="title" 
-                name="title" 
+              <input
+                type="text"
+                id="title"
+                name="title"
                 required
-                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 placeholder="e.g., Mount Musala"
               />
             </div>
-            
+
             <div>
-              <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                for="country"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Country *
               </label>
-              <select 
-                id="country" 
-                name="country" 
+              <select
+                id="country"
+                name="country"
                 required
-                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select a country</option>
-                {euCountries.map((country) => (
-                  <option value={country}>{country}</option>
-                ))}
+                {euCountries.map(country => <option value={country}>{country}</option>)}
               </select>
             </div>
-            
+
             <div>
-              <label for="elevation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                for="elevation"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Elevation (m) *
               </label>
-              <input 
-                type="number" 
-                id="elevation" 
-                name="elevation" 
+              <input
+                type="number"
+                id="elevation"
+                name="elevation"
                 required
                 min="0"
-                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 placeholder="2925"
               />
             </div>
-            
+
             <div>
-              <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                for="date"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Date *
               </label>
-              <input 
-                type="date" 
-                id="date" 
-                name="date" 
+              <input
+                type="date"
+                id="date"
+                name="date"
                 required
-                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               />
             </div>
-            
+
             <div>
-              <label for="difficulty" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                for="difficulty"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Difficulty *
               </label>
-              <select 
-                id="difficulty" 
-                name="difficulty" 
+              <select
+                id="difficulty"
+                name="difficulty"
                 required
-                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               >
                 <option value="">Select difficulty</option>
-                {difficulties.map((difficulty) => (
-                  <option value={difficulty}>{difficulty}</option>
-                ))}
+                {difficulties.map(difficulty => <option value={difficulty}>{difficulty}</option>)}
               </select>
             </div>
-            
+
             <div>
-              <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label
+                for="duration"
+                class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Duration
               </label>
-              <input 
-                type="text" 
-                id="duration" 
+              <input
+                type="text"
+                id="duration"
                 name="duration"
-                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                 placeholder="e.g., 1 day, 6 hours"
               />
             </div>
           </div>
-          
+
           <div class="mt-4">
-            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Short Description *
+            <label
+              for="description"
+              class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Short Description (optional)
             </label>
-            <textarea 
-              id="description" 
-              name="description" 
-              required
+            <textarea
+              id="description"
+              name="description"
               rows="3"
-              class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Brief description for the adventure list..."
-            ></textarea>
+              class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              placeholder="Brief description for the adventure list... (optional)"></textarea>
           </div>
-          
+
           <div class="mt-4">
-            <label for="tags" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label
+              for="tags"
+              class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Tags (comma-separated)
             </label>
-            <input 
-              type="text" 
-              id="tags" 
+            <input
+              type="text"
+              id="tags"
               name="tags"
-              class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               placeholder="e.g., hiking, alpine, challenging"
             />
           </div>
-          
+
           <div class="mt-4">
-            <label for="youtubeUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label
+              for="youtubeUrl"
+              class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               YouTube URL (optional)
             </label>
-            <input 
-              type="url" 
-              id="youtubeUrl" 
+            <input
+              type="url"
+              id="youtubeUrl"
               name="youtubeUrl"
-              class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              class="w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
               placeholder="https://youtube.com/watch?v=..."
             />
           </div>
-          
+
           <div class="mt-4 flex items-center">
-            <input 
-              type="checkbox" 
-              id="featured" 
+            <input
+              type="checkbox"
+              id="featured"
               name="featured"
-              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
             />
             <label for="featured" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
               Mark as featured adventure
@@ -174,112 +219,221 @@ const difficulties = ['Easy', 'Moderate', 'Hard', 'Expert'];
         </div>
 
         <!-- Image Upload -->
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Images</h2>
-          
-          <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
-            <input type="file" id="image-upload" accept="image/*" multiple class="hidden" />
-            <div id="drop-zone" class="cursor-pointer">
-              <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                <span class="font-medium">Click to upload</span> or drag and drop images
-              </p>
-              <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Images</h2>
+
+          <!-- Cover Image -->
+          <div class="mb-6">
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Cover Image (appears at top of article)
+            </label>
+            <div
+              class="rounded-lg border-2 border-dashed border-gray-300 p-4 text-center dark:border-gray-600"
+            >
+              <input type="file" id="cover-image-upload" accept="image/*" class="hidden" />
+              <div id="cover-drop-zone" class="cursor-pointer">
+                <svg
+                  class="mx-auto h-8 w-8 text-gray-400"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                >
+                  <path
+                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span class="font-medium">Click to upload cover image</span>
+                </p>
+              </div>
+            </div>
+            <div id="cover-image-preview" class="mt-2"></div>
+            <div id="cover-position-controls" class="mt-4 hidden">
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Image Position & Preview
+              </label>
+              
+              <!-- Image info display -->
+              <div id="cover-image-info" class="mb-4 text-sm text-gray-600 dark:text-gray-400"></div>
+              
+              <!-- Live preview -->
+              <div class="mb-4">
+                <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">Live Preview (Cover Image 1920x800px)</div>
+                <div id="cover-live-preview" class="relative w-full h-20 bg-gray-200 dark:bg-gray-700 rounded border overflow-hidden">
+                  <div id="cover-preview-image" class="absolute inset-0 bg-gray-300 dark:bg-gray-600"></div>
+                </div>
+              </div>
+              
+              <!-- Position controls -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Horizontal Position: <span id="cover-x-display">50</span>%
+                  </label>
+                  <input 
+                    type="range" 
+                    id="cover-position-x" 
+                    min="0" 
+                    max="100" 
+                    value="50" 
+                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Vertical Position: <span id="cover-y-display">50</span>%
+                  </label>
+                  <input 
+                    type="range" 
+                    id="cover-position-y" 
+                    min="0" 
+                    max="100" 
+                    value="50" 
+                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                  />
+                </div>
+              </div>
+              
+              <!-- Reset button -->
+              <div class="mt-2 text-center">
+                <button type="button" id="cover-reset-position" class="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                  Reset to Center
+                </button>
+              </div>
+              
+              <input type="hidden" id="cover-position" name="cover_position" value="50,50" />
             </div>
           </div>
-          
-          <div id="image-preview" class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+
+          <!-- Thumbnail Image -->
+          <div class="mb-6">
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Thumbnail Image (appears in post lists)
+            </label>
+            <div
+              class="rounded-lg border-2 border-dashed border-gray-300 p-4 text-center dark:border-gray-600"
+            >
+              <input type="file" id="thumbnail-image-upload" accept="image/*" class="hidden" />
+              <div id="thumbnail-drop-zone" class="cursor-pointer">
+                <svg
+                  class="mx-auto h-8 w-8 text-gray-400"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                >
+                  <path
+                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  <span class="font-medium">Click to upload thumbnail</span>
+                </p>
+              </div>
+            </div>
+            <div id="thumbnail-image-preview" class="mt-2"></div>
+            <div id="thumbnail-position-controls" class="mt-4 hidden">
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Image Position & Preview
+              </label>
+              
+              <!-- Image info display -->
+              <div id="thumbnail-image-info" class="mb-4 text-sm text-gray-600 dark:text-gray-400"></div>
+              
+              <!-- Live preview -->
+              <div class="mb-4">
+                <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">Live Preview (Thumbnail 400x300px)</div>
+                <div id="thumbnail-live-preview" class="relative w-32 h-24 bg-gray-200 dark:bg-gray-700 rounded border overflow-hidden mx-auto">
+                  <div id="thumbnail-preview-image" class="absolute inset-0 bg-gray-300 dark:bg-gray-600"></div>
+                </div>
+              </div>
+              
+              <!-- Position controls -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Horizontal Position: <span id="thumbnail-x-display">50</span>%
+                  </label>
+                  <input 
+                    type="range" 
+                    id="thumbnail-position-x" 
+                    min="0" 
+                    max="100" 
+                    value="50" 
+                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Vertical Position: <span id="thumbnail-y-display">50</span>%
+                  </label>
+                  <input 
+                    type="range" 
+                    id="thumbnail-position-y" 
+                    min="0" 
+                    max="100" 
+                    value="50" 
+                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                  />
+                </div>
+              </div>
+              
+              <!-- Reset button -->
+              <div class="mt-2 text-center">
+                <button type="button" id="thumbnail-reset-position" class="text-xs text-green-600 hover:text-green-800 dark:text-green-400">
+                  Reset to Center
+                </button>
+              </div>
+              
+              <input type="hidden" id="thumbnail-position" name="thumbnail_position" value="50,50" />
+            </div>
+          </div>
+
+
         </div>
 
         <!-- Content Editor -->
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Adventure Story</h2>
-          
-          <!-- Toolbar -->
-          <div class="border border-gray-300 dark:border-gray-600 rounded-t-md p-2 bg-gray-50 dark:bg-gray-700 flex flex-wrap gap-2">
-            <button type="button" class="toolbar-btn" data-command="bold" title="Bold">
-              <strong>B</strong>
-            </button>
-            <button type="button" class="toolbar-btn" data-command="italic" title="Italic">
-              <em>I</em>
-            </button>
-            <button type="button" class="toolbar-btn" data-command="underline" title="Underline">
-              <u>U</u>
-            </button>
-            <div class="border-l border-gray-300 dark:border-gray-500 mx-2"></div>
-            <button type="button" class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
-              1.
-            </button>
-            <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
-              •
-            </button>
-            <div class="border-l border-gray-300 dark:border-gray-500 mx-2"></div>
-            <button type="button" class="toolbar-btn" data-command="formatBlock" data-value="h2" title="Heading 2">
-              H2
-            </button>
-            <button type="button" class="toolbar-btn" data-command="formatBlock" data-value="h3" title="Heading 3">
-              H3
-            </button>
-            <button type="button" class="toolbar-btn" data-command="formatBlock" data-value="p" title="Paragraph">
-              P
-            </button>
-          </div>
-          
-          <!-- Editor -->
-          <div 
-            id="content-editor" 
-            contenteditable="true"
-            class="min-h-96 p-4 border border-t-0 border-gray-300 dark:border-gray-600 rounded-b-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            data-placeholder="Write your adventure story here..."
-          >
-            <h2>The Adventure</h2>
-            <p>Describe your peak adventure...</p>
-            
-            <h2>The Journey</h2>
-            <p>Detail the route and experience...</p>
-            
-            <h2>Summit Experience</h2>
-            <p>Share the summit moment...</p>
-            
-            <h2>Practical Information</h2>
-            <ul>
-              <li><strong>Best Time to Visit:</strong> </li>
-              <li><strong>Starting Point:</strong> </li>
-              <li><strong>Trail Difficulty:</strong> </li>
-              <li><strong>Equipment:</strong> </li>
-            </ul>
-          </div>
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Adventure Story</h2>
+
+          <!-- Rich Text Editor -->
+          <div id="content-editor" style="min-height: 400px;"></div>
+          <textarea id="content-html" name="content" style="display: none;"></textarea>
         </div>
 
         <!-- Actions -->
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+        <div class="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+          <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div class="flex items-center">
-              <input 
-                type="checkbox" 
-                id="save-as-draft" 
+              <input
+                type="checkbox"
+                id="save-as-draft"
                 name="saveAsDraft"
-                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 checked
               />
-              <label for="save-as-draft" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+              <label
+                for="save-as-draft"
+                class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+              >
                 Save as draft
               </label>
             </div>
-            
+
             <div class="flex gap-4">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 id="preview-btn"
-                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 Preview
               </button>
-              <button 
+              <button
                 type="submit"
-                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                class="rounded-md bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700"
               >
                 Save Adventure
               </button>
@@ -293,194 +447,709 @@ const difficulties = ['Easy', 'Moderate', 'Hard', 'Expert'];
   <Footer />
 </Layout>
 
+<!-- Quill Rich Text Editor -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
 <style>
   .toolbar-btn {
-    @apply px-4 py-1 text-sm border border-gray-300 dark:border-gray-500 rounded bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors;
+    @apply rounded border border-gray-300 bg-white px-4 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-500 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500;
   }
-  
+
+  /* Range slider styling */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-track {
+    background: #d1d5db;
+    height: 8px;
+    border-radius: 4px;
+  }
+
+  .dark input[type="range"]::-webkit-slider-track {
+    background: #374151;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: #2563eb;
+  }
+
+  input[type="range"]::-moz-range-track {
+    background: #d1d5db;
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+  }
+
+  .dark input[type="range"]::-moz-range-track {
+    background: #374151;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  input[type="range"]::-moz-range-thumb:hover {
+    background: #2563eb;
+  }
+
+  .image-preview-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .image-preview-container img {
+    transition: object-position 0.3s ease;
+  }
+
   #content-editor:empty:before {
     content: attr(data-placeholder);
-    color: #9CA3AF;
+    color: #9ca3af;
     pointer-events: none;
   }
-  
+
   #content-editor h2 {
-    @apply text-xl font-bold mt-6 mb-3 text-gray-900 dark:text-white;
+    @apply mb-3 mt-6 text-xl font-bold text-gray-900 dark:text-white;
   }
-  
+
   #content-editor h3 {
-    @apply text-lg font-semibold mt-4 mb-2 text-gray-900 dark:text-white;
+    @apply mb-2 mt-4 text-lg font-semibold text-gray-900 dark:text-white;
   }
-  
+
   #content-editor p {
     @apply mb-3 text-gray-800 dark:text-gray-200;
   }
-  
-  #content-editor ul, #content-editor ol {
-    @apply ml-6 mb-3;
+
+  #content-editor ul,
+  #content-editor ol {
+    @apply mb-3 ml-6;
   }
-  
+
   #content-editor li {
     @apply mb-1 text-gray-800 dark:text-gray-200;
   }
-  
+
+  #content-editor img {
+    @apply my-4 h-auto max-w-full rounded-lg;
+    max-height: 400px;
+    width: auto;
+    object-fit: contain;
+    margin: 1.5rem auto;
+    display: block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  #content-editor a {
+    @apply text-blue-600 hover:underline dark:text-blue-400;
+  }
+
+  #content-editor strong,
+  #content-editor b {
+    @apply font-bold;
+  }
+
+  #content-editor em,
+  #content-editor i {
+    @apply italic;
+  }
+
+  #content-editor u {
+    @apply underline;
+  }
+
   #content-editor strong {
     @apply font-bold;
   }
-  
+
   #content-editor em {
     @apply italic;
+  }
+
+  /* Quill Editor Sticky Toolbar */
+  .ql-toolbar.ql-snow {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    background: white !important;
+    border-bottom: 2px solid #e5e7eb !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  /* Ensure the editor container allows sticky positioning */
+  #content-editor .ql-container {
+    position: relative !important;
+  }
+
+  /* Quill Editor Dark Mode Support */
+  .dark .ql-toolbar.ql-snow {
+    border-color: #4b5563 !important;
+    background: #374151 !important;
+    border-bottom-color: #4b5563 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .dark .ql-container {
+    border-color: #4b5563 !important;
+    background: #374151 !important;
+    color: #f9fafb !important;
+  }
+
+  .dark .ql-editor {
+    color: #f9fafb !important;
+  }
+
+  .dark .ql-toolbar .ql-stroke {
+    stroke: #f9fafb !important;
+  }
+
+  .dark .ql-toolbar .ql-fill {
+    fill: #f9fafb !important;
+  }
+
+  .dark .ql-toolbar button:hover {
+    background: #4b5563 !important;
+  }
+
+  .dark .ql-toolbar button.ql-active {
+    background: #3b82f6 !important;
   }
 </style>
 
 <script>
-  // Rich text editor functionality
+  // Type definitions
+  interface ImageData {
+    file: File;
+    src: string;
+    name: string;
+  }
+
+  interface QuillInstance {
+    root: HTMLElement;
+    getContents(): any;
+    setContents(delta: any): void;
+    getText(): string;
+    getHTML(): string;
+    insertEmbed(index: number, type: string, value: any): void;
+    getSelection(): any;
+    insertText(index: number, text: string, format?: string, value?: any): void;
+    deleteText(index: number, length: number): void;
+    setSelection(index: number, length?: number): void;
+    clipboard: {
+      dangerouslyPasteHTML(html: string): void;
+    };
+  }
+
+  declare const Quill: {
+    new (selector: string, options: any): QuillInstance;
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
-    const editor = document.getElementById('content-editor') as HTMLElement | null;
-    const form = document.getElementById('adventure-form') as HTMLFormElement | null;
-    const imageUpload = document.getElementById('image-upload') as HTMLInputElement | null;
-    const dropZone = document.getElementById('drop-zone') as HTMLElement | null;
-    const imagePreview = document.getElementById('image-preview') as HTMLElement | null;
-    
-    if (!editor || !form || !imageUpload || !dropZone || !imagePreview) {
-      console.error('Required elements not found');
-      return;
-    }
-    
-    // Toolbar functionality
-    document.querySelectorAll('.toolbar-btn').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const button = btn as HTMLButtonElement;
-        const command = button.dataset.command;
-        const value = button.dataset.value || null;
-        
-                 if (command) {
-           document.execCommand(command, false, value || undefined);
-           editor.focus();
-         }
+    const form = document.querySelector('form') as HTMLFormElement;
+
+    // Initialize Quill editor with custom image handler
+    const quill = new Quill('#content-editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: {
+          container: [
+            [{ header: [2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean'],
+          ],
+          handlers: {
+            image: function() {
+              const input = document.createElement('input');
+              input.setAttribute('type', 'file');
+              input.setAttribute('accept', 'image/*');
+              input.click();
+
+              input.onchange = async () => {
+                const files = input.files;
+                if (!files || files.length === 0) return;
+                const file = files[0];
+
+                // Validate file on client side
+                if (!file.type.startsWith('image/') && !file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                  alert('Please select a valid image file (JPG, PNG, GIF, or WebP)');
+                  return;
+                }
+
+                if (file.size > 15 * 1024 * 1024) {
+                  alert(`File too large: ${(file.size / 1024 / 1024).toFixed(2)}MB. Please select an image smaller than 15MB.`);
+                  return;
+                }
+
+                console.log('Uploading file:', {
+                  name: file.name,
+                  type: file.type,
+                  size: file.size
+                });
+
+                // Show loading state
+                const range = quill.getSelection();
+                if (!range) return;
+                
+                quill.insertText(range.index, 'Uploading image...');
+
+                try {
+                  // Upload the image
+                  const formData = new FormData();
+                  formData.append('image', file);
+                  formData.append('type', 'content');
+
+                  const response = await fetch('/api/upload-image', {
+                    method: 'POST',
+                    body: formData,
+                  });
+
+                  const result = await response.json();
+
+                  // Remove loading text
+                  quill.deleteText(range.index, 'Uploading image...'.length);
+
+                  if (result.success) {
+                    // Insert the uploaded image
+                    quill.insertEmbed(range.index, 'image', result.url);
+                    quill.setSelection(range.index + 1);
+                    console.log('Image uploaded successfully:', result.url);
+                  } else {
+                    console.error('Upload failed:', result.message);
+                    quill.insertText(range.index, `Upload failed: ${result.message}`);
+                  }
+                } catch (error) {
+                  console.error('Image upload error:', error);
+                  // Remove loading text
+                  quill.deleteText(range.index, 'Uploading image...'.length);
+                  quill.insertText(range.index, 'Image upload failed. Please try again.');
+                }
+              };
+            }
+          }
+        }
+      },
+      placeholder: 'Write your adventure story...',
+    });
+
+    // Set initial content
+    quill.clipboard.dangerouslyPasteHTML(`
+      <h2>The Adventure</h2>
+      <p>Describe your peak adventure...</p>
+      
+      <h2>The Journey</h2>
+      <p>Detail the route and experience...</p>
+      
+      <h2>Summit Experience</h2>
+      <p>Share the summit moment...</p>
+      
+      <h2>Practical Information</h2>
+      <ul>
+        <li><strong>Best Time to Visit:</strong> </li>
+        <li><strong>Starting Point:</strong> </li>
+        <li><strong>Trail Difficulty:</strong> </li>
+        <li><strong>Equipment:</strong> </li>
+      </ul>
+    `);
+
+    // Update hidden textarea when content changes
+    quill.root.addEventListener('input', () => {
+      const hiddenTextarea = document.getElementById('content-html') as HTMLTextAreaElement;
+      if (hiddenTextarea) {
+        hiddenTextarea.value = quill.root.innerHTML;
+      }
+    });
+
+    // Image storage
+    let coverImage: File | null = null;
+    let thumbnailImage: File | null = null;
+
+    // Image upload setup
+    function setupImageUpload(
+      uploadInput: HTMLInputElement,
+      dropZone: HTMLElement,
+      previewArea: HTMLElement | null,
+      onImageSelected: (file: File, src: string) => void
+    ): void {
+      uploadInput.addEventListener('change', (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        if (target.files) {
+          handleImageFiles(Array.from(target.files), onImageSelected);
+        }
       });
-    });
-    
-    // Image upload handling
-    dropZone.addEventListener('click', () => imageUpload.click());
-    
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
-    });
-    
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
-    });
-    
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
-      if (e.dataTransfer?.files) {
-        handleFiles(e.dataTransfer.files);
-      }
-    });
-    
-    imageUpload.addEventListener('change', (e) => {
-      const target = e.target as HTMLInputElement;
-      if (target.files) {
-        handleFiles(target.files);
-      }
-    });
-    
-    function handleFiles(files: FileList) {
-      Array.from(files).forEach((file: File) => {
+
+      dropZone.addEventListener('click', () => uploadInput.click());
+
+      dropZone.addEventListener('dragover', (e: DragEvent) => {
+        e.preventDefault();
+        dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
+      });
+
+      dropZone.addEventListener('drop', (e: DragEvent) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900');
+        if (e.dataTransfer?.files) {
+          handleImageFiles(Array.from(e.dataTransfer.files), onImageSelected);
+        }
+      });
+    }
+
+    function handleImageFiles(
+      files: File[],
+      onImageSelected: (file: File, src: string) => void
+    ): void {
+      files.forEach((file: File) => {
         if (file.type.startsWith('image/')) {
           const reader = new FileReader();
-          reader.onload = (e) => {
-                         const result = e.target?.result as string;
-             if (result && imagePreview) {
-               const img = document.createElement('div');
-               img.className = 'relative';
-               img.innerHTML = `
-                 <img src="${result}" class="w-full h-32 object-cover rounded-lg" />
-                 <button type="button" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600" onclick="this.parentElement.remove()">×</button>
-               `;
-               imagePreview.appendChild(img);
-             }
+          reader.onload = (e: ProgressEvent<FileReader>) => {
+            if (e.target?.result) {
+              onImageSelected(file, e.target.result as string);
+            }
           };
           reader.readAsDataURL(file);
         }
       });
     }
-    
-    // Form submission
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+
+    function displaySingleImage(
+      previewArea: HTMLElement,
+      file: File,
+      src: string,
+      type: string
+    ): void {
+      const [x, y] = getImagePosition(type);
+      const objectPosition = getObjectPositionValue(x, y);
       
-      const formData = new FormData(form);
-      const content = editor.innerHTML;
-      const draftCheckbox = document.getElementById('save-as-draft') as HTMLInputElement | null;
-      const isDraft = draftCheckbox?.checked || false;
+      previewArea.innerHTML = `
+        <div class="image-preview-container relative">
+          <img src="${src}" alt="${file.name}" 
+               class="w-full h-32 object-cover rounded border" 
+               style="object-position: ${objectPosition}"
+               id="${type}-preview-image">
+          <div class="absolute top-2 right-2">
+            <button type="button" class="bg-red-500 text-white p-1 rounded-full text-xs hover:bg-red-600" onclick="removeSingleImage('${type}')">
+              ✕
+            </button>
+          </div>
+          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">${file.name}</p>
+        </div>
+      `;
       
-      const tagsValue = formData.get('tags') as string | null;
-      const elevationValue = formData.get('elevation') as string | null;
+      // Show position controls and set up the flexible positioning
+      const controls = document.getElementById(`${type}-position-controls`);
+      if (controls) {
+        controls.classList.remove('hidden');
+        setupImagePositioning(type, file, src);
+      }
+    }
+
+    function setupImagePositioning(type: string, file: File, src: string): void {
+      const img = new Image();
+      img.onload = function() {
+        const imageInfo = document.getElementById(`${type}-image-info`);
+        const livePreview = document.getElementById(`${type}-preview-image`);
+        const isOver = document.getElementById(`${type}-live-preview`);
+        
+        // Display image dimensions and container info
+        if (imageInfo) {
+          const containerInfo = type === 'cover' ? '1920x800px' : '400x300px';
+          imageInfo.innerHTML = `
+            <div class="text-xs">
+              <div>Your image: <span class="font-medium">${img.width}x${img.height}px</span></div>
+              <div>Display size: <span class="font-medium">${containerInfo}</span></div>
+              <div class="text-gray-500">${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)</div>
+            </div>
+          `;
+        }
+        
+        // Set up live preview
+        if (livePreview) {
+          livePreview.style.backgroundImage = `url(${src})`;
+          livePreview.style.backgroundSize = 'cover';
+        }
+        
+        // Initialize sliders
+        const [currentX, currentY] = getImagePosition(type);
+        setupSliders(type, currentX, currentY);
+      };
+      img.src = src;
+    }
+
+    function setupSliders(type: string, initialX: number, initialY: number): void {
+      const xSlider = document.getElementById(`${type}-position-x`) as HTMLInputElement;
+      const ySlider = document.getElementById(`${type}-position-y`) as HTMLInputElement;
+      const xDisplay = document.getElementById(`${type}-x-display`);
+      const yDisplay = document.getElementById(`${type}-y-display`);
+      const resetBtn = document.getElementById(`${type}-reset-position`);
       
-      // Collect form data
-      const adventureData = {
-        title: formData.get('title') as string,
-        country: formData.get('country') as string,
-        elevation: elevationValue ? parseInt(elevationValue) : 0,
-        date: formData.get('date') as string,
-        description: formData.get('description') as string,
-        difficulty: formData.get('difficulty') as string,
-        duration: (formData.get('duration') as string) || '1 day',
-        tags: tagsValue ? tagsValue.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag) : [],
-        youtubeUrl: (formData.get('youtubeUrl') as string) || undefined,
-        featured: formData.has('featured'),
-        content: content,
-        isDraft: isDraft
+      if (!xSlider || !ySlider) return;
+      
+      // Set initial values
+      xSlider.value = initialX.toString();
+      ySlider.value = initialY.toString();
+      if (xDisplay) xDisplay.textContent = initialX.toString();
+      if (yDisplay) yDisplay.textContent = initialY.toString();
+      
+      // Update on slider change
+      const updatePosition = () => {
+        const x = parseInt(xSlider.value);
+        const y = parseInt(ySlider.value);
+        
+        if (xDisplay) xDisplay.textContent = x.toString();
+        if (yDisplay) yDisplay.textContent = y.toString();
+        
+        updateImagePosition(type, x, y);
       };
       
-      console.log('Adventure data:', adventureData);
+      xSlider.addEventListener('input', updatePosition);
+      ySlider.addEventListener('input', updatePosition);
       
-      // TODO: Implement actual save functionality
-      alert(`Adventure "${adventureData.title}" saved as ${isDraft ? 'draft' : 'published'}!`);
-    });
-    
+      // Reset button
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          xSlider.value = '50';
+          ySlider.value = '50';
+          updatePosition();
+        });
+      }
+      
+      // Initial update
+      updatePosition();
+    }
+
+    function getImagePosition(type: string): [number, number] {
+      const input = document.getElementById(`${type}-position`) as HTMLInputElement;
+      if (!input || !input.value) return [50, 50];
+      
+      const [x, y] = input.value.split(',').map(v => parseInt(v.trim()) || 50);
+      return [x, y];
+    }
+
+    function getObjectPositionValue(x: number, y: number): string {
+      return `${x}% ${y}%`;
+    }
+
+    function updateImagePosition(type: string, x: number, y: number): void {
+      const input = document.getElementById(`${type}-position`) as HTMLInputElement;
+      const previewImage = document.getElementById(`${type}-preview-image`) as HTMLElement;
+      const livePreview = document.getElementById(`${type}-preview-image`);
+      
+      // Update hidden input
+      if (input) {
+        input.value = `${x},${y}`;
+      }
+      
+      // Update main preview image
+      if (previewImage) {
+        previewImage.style.objectPosition = getObjectPositionValue(x, y);
+      }
+      
+      // Update live preview
+      if (livePreview) {
+        livePreview.style.backgroundPosition = getObjectPositionValue(x, y);
+      }
+    }
+
+
+
+    // Setup image uploads
+    const coverUpload = document.getElementById('cover-image-upload') as HTMLInputElement;
+    const coverDrop = document.getElementById('cover-drop-zone') as HTMLElement;
+    const coverPreview = document.getElementById('cover-image-preview') as HTMLElement;
+
+    if (coverUpload && coverDrop && coverPreview) {
+      setupImageUpload(coverUpload, coverDrop, coverPreview, (file: File, src: string) => {
+        coverImage = file;
+        displaySingleImage(coverPreview, file, src, 'cover');
+      });
+    }
+
+    const thumbUpload = document.getElementById('thumbnail-image-upload') as HTMLInputElement;
+    const thumbDrop = document.getElementById('thumbnail-drop-zone') as HTMLElement;
+    const thumbPreview = document.getElementById('thumbnail-image-preview') as HTMLElement;
+
+    if (thumbUpload && thumbDrop && thumbPreview) {
+      setupImageUpload(thumbUpload, thumbDrop, thumbPreview, (file: File, src: string) => {
+        thumbnailImage = file;
+        displaySingleImage(thumbPreview, file, src, 'thumbnail');
+      });
+    }
+
+
+
+    // No need for button event listeners anymore - using range sliders
+
+    // Global functions
+    (window as any).removeSingleImage = function (type: string): void {
+      if (type === 'cover') {
+        coverImage = null;
+        const preview = document.getElementById('cover-image-preview');
+        const controls = document.getElementById('cover-position-controls');
+        if (preview) preview.innerHTML = '';
+        if (controls) controls.classList.add('hidden');
+      } else if (type === 'thumbnail') {
+        thumbnailImage = null;
+        const preview = document.getElementById('thumbnail-image-preview');
+        const controls = document.getElementById('thumbnail-position-controls');
+        if (preview) preview.innerHTML = '';
+        if (controls) controls.classList.add('hidden');
+      }
+    };
+
+
+
+    // Form submission
+    if (form) {
+      form.addEventListener('submit', async (e: Event) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const content = quill.root.innerHTML;
+        const draftCheckbox = document.getElementById('save-as-draft') as HTMLInputElement;
+        const isDraft = draftCheckbox && draftCheckbox.checked;
+
+        if (coverImage) {
+          formData.set('coverImage', coverImage);
+          const [coverX, coverY] = getImagePosition('cover');
+          formData.set('coverPosition', `${coverX},${coverY}`);
+        }
+        if (thumbnailImage) {
+          formData.set('thumbnailImage', thumbnailImage);
+          const [thumbX, thumbY] = getImagePosition('thumbnail');
+          formData.set('thumbnailPosition', `${thumbX},${thumbY}`);
+        }
+
+
+        formData.set('content', content);
+        formData.set('isDraft', isDraft.toString());
+
+        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+        if (!submitBtn) return;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Saving...';
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch('/api/create-post', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            alert(result.message);
+            form.reset();
+            quill.clipboard.dangerouslyPasteHTML('<p>Start writing your adventure story...</p>');
+            coverImage = null;
+            thumbnailImage = null;
+
+
+            const coverPrev = document.getElementById('cover-image-preview');
+            const thumbPrev = document.getElementById('thumbnail-image-preview');
+            const gallery = document.getElementById('content-images-gallery');
+            if (coverPrev) coverPrev.innerHTML = '';
+            if (thumbPrev) thumbPrev.innerHTML = '';
+            if (gallery) gallery.innerHTML = '';
+
+            if (!isDraft && result.slug) {
+              setTimeout(() => {
+                window.location.href = `/peaks/${result.slug}`;
+              }, 1000);
+            }
+          } else {
+            alert(`Error: ${result.message}`);
+          }
+        } catch (error) {
+          console.error('Error saving post:', error);
+          alert('Failed to save post. Please try again.');
+        } finally {
+          if (submitBtn && originalText) {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }
+        }
+      });
+    }
+
     // Preview functionality
     const previewBtn = document.getElementById('preview-btn');
     if (previewBtn) {
       previewBtn.addEventListener('click', () => {
-        const content = editor.innerHTML;
-        const titleInput = document.getElementById('title') as HTMLInputElement | null;
-        const countrySelect = document.getElementById('country') as HTMLSelectElement | null;
-        const elevationInput = document.getElementById('elevation') as HTMLInputElement | null;
-        const difficultySelect = document.getElementById('difficulty') as HTMLSelectElement | null;
-        
+        const content = quill.root.innerHTML;
+        const titleInput = document.getElementById('title') as HTMLInputElement;
+        const countrySelect = document.getElementById('country') as HTMLSelectElement;
+        const elevationInput = document.getElementById('elevation') as HTMLInputElement;
+        const difficultySelect = document.getElementById('difficulty') as HTMLSelectElement;
+
         const previewWindow = window.open('', '_blank');
         if (previewWindow) {
-          const title = titleInput?.value || 'Untitled';
+          const title = titleInput?.value || 'Untitled Adventure';
           const country = countrySelect?.value || 'Unknown';
           const elevation = elevationInput?.value || '0';
           const difficulty = difficultySelect?.value || 'Unknown';
-          
+
           previewWindow.document.open();
           previewWindow.document.write(`
+            <!DOCTYPE html>
             <html>
               <head>
                 <title>Preview - ${title}</title>
                 <style>
-                  body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+                  body { 
+                    font-family: system-ui, sans-serif; 
+                    max-width: 800px; 
+                    margin: 0 auto; 
+                    padding: 20px;
+                    line-height: 1.6;
+                  }
+                  h1 { color: #1f2937; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
                   h2 { color: #1f2937; font-size: 1.5rem; font-weight: bold; margin-top: 2rem; margin-bottom: 1rem; }
                   h3 { color: #374151; font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-                  p { margin-bottom: 1rem; line-height: 1.6; }
+                  p { margin-bottom: 1rem; }
                   ul, ol { margin-left: 2rem; margin-bottom: 1rem; }
                   li { margin-bottom: 0.25rem; }
+                  img { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem 0; }
+                  .meta { background: #f9fafb; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+                  .meta strong { color: #374151; }
                 </style>
               </head>
               <body>
                 <h1>${title}</h1>
-                <p><strong>Country:</strong> ${country}</p>
-                <p><strong>Elevation:</strong> ${elevation}m</p>
-                <p><strong>Difficulty:</strong> ${difficulty}</p>
-                <hr>
+                ${coverImage ? `<img src="${URL.createObjectURL(coverImage)}" alt="Cover Image" style="width: 100%; height: 300px; object-fit: cover; margin-bottom: 2rem;">` : ''}
+                <div class="meta">
+                  <p><strong>Country:</strong> ${country}</p>
+                  <p><strong>Elevation:</strong> ${elevation}m</p>
+                  <p><strong>Difficulty:</strong> ${difficulty}</p>
+                </div>
                 ${content}
               </body>
             </html>
@@ -490,4 +1159,4 @@ const difficulties = ['Easy', 'Moderate', 'Hard', 'Expert'];
       });
     }
   });
-</script> 
+</script>

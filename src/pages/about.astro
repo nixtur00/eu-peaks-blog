@@ -6,63 +6,196 @@ import Footer from '../components/Footer.astro';
 
 <Layout title="About - EU Peaks">
   <Navigation />
-  
-  <main class="min-h-screen py-12">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold mb-6">About Us</h1>
-      </div>
 
-      <div class="prose prose-lg dark:prose-invert max-w-none" style="text-wrap: pretty; orphans: 2; widows: 2;">
-        <section class="mb-12">
-          <div class="mb-6 flex justify-center">
-            <img 
-              src="/images/us/IMG_6771.jpeg" 
-              alt="Nikolay and Maria on a mountain adventure" 
-              class="rounded-lg shadow-lg max-w-full h-auto max-h-96 object-cover"
-            />
+  <main class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden text-white py-16 lg:py-20">
+      <div class="absolute inset-0 hero-gradient"></div>
+      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="mb-6 font-bold text-white drop-shadow-lg">About Us</h1>
+        </div>
+      </div>
+    </section>
+
+        <!-- Who We Are Section -->
+    <section class="content-section">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <h2 class="section-heading">Who are we?</h2>
+        <div class="text-center mb-12">
+          <p class="text-xl leading-relaxed text-mountain-600 dark:text-mountain-400">
+            We are Nikolay (24) and Maria (25), an adventure duo from Bulgaria passionate about mountaineering and
+            exploration. As hiking buddies and travel companions, we're embarking on an ambitious
+            journey to climb the highest peak in each of the 27 European Union member countries.
+          </p>
+        </div>
+        
+        <div class="flex justify-center">
+          <img
+            src="/images/us/IMG_3202.JPG"
+            alt="Nikolay and Maria on a mountain adventure"
+            class="h-auto max-h-[600px] w-full max-w-4xl rounded-lg object-cover shadow-lg"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Individual Profiles Section -->
+    <section class="content-section bg-mountain-50 dark:bg-mountain-900">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          
+          <!-- Mimmy's Profile -->
+          <div class="text-center">
+            <div class="mb-8 flex justify-center">
+              <img
+                src="/images/us/mimmy.jpg"
+                alt="Mimmy - The visionary behind 27 Before 27"
+                class="h-80 w-80 rounded-full object-cover shadow-lg"
+              />
+            </div>
+            <h3 class="text-2xl font-bold text-mountain-900 dark:text-mountain-100 mb-4">Mimmy - The Visionary</h3>
+            <div class="text-lg leading-relaxed text-mountain-600 dark:text-mountain-400 space-y-4">
+              <p>
+                She is the visionary behind our goal to summit all 27 peaks and the driving force that turns 
+                dreams into adventures.
+              </p>
+              <p>
+                In addition to loving the mountains and nature, she rows and runs A LOT. She is basically never 
+                tired and wants to travel around the world and have constant adventures. When Mimmy sets her mind 
+                on a peak, there's no stopping her determination.
+              </p>
+            </div>
           </div>
-          
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">Who We Are</h2>
-          
-          <p>
-            We are Nikolay and Maria, an adventure duo passionate about mountaineering and exploration. As hiking buddies 
-            and travel companions, we're embarking on an ambitious journey to climb the highest peak in each of the 27 
-            European Union member countries. From the towering Alps to the rolling hills of Denmark, each summit represents 
-            a unique challenge and story that we're excited to share with you.
-          </p>
-        </section>
 
-        <section class="mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">Our Mission</h2>
-          <p>
-            This blog documents our shared adventure as we work together to conquer Europe's highest peaks. 
-            Each mountain offers its own set of challenges, and we believe that the journey is just as important 
-            as the destination. Through teamwork, perseverance, and a shared love of the outdoors, we're making 
-            memories one summit at a time.
-          </p>
-        </section>
+          <!-- Nick's Profile -->
+          <div class="text-center">
+            <div class="mb-8 flex justify-center">
+              <img
+                src="/images/us/nick.jpg"
+                alt="Nick - The adventure planner"
+                class="h-80 w-80 rounded-full object-cover object-top shadow-lg"
+              />
+            </div>
+            <h3 class="text-2xl font-bold text-mountain-900 dark:text-mountain-100 mb-4">Nick - The Supporter</h3>
+            <div class="text-lg leading-relaxed text-mountain-600 dark:text-mountain-400 space-y-4">
+              <p>
+                I joined Mimmy on a spontaneous summer trip to Greece 4 years ago where we didn't know each other that well. 
+                Little did I know I would be joining her on more and more adventures as her 27 Before 27 dream was born.
+              </p>
+              <p>
+                When she comes up with an idea for the next peak, I'm there to support and make it happen. Her goal has become my goal, 
+                and together we turn these mountain dreams into reality.
+              </p>
+              <p>
+                While I enjoy our adventures, my dream is to one day make a film about them and take it to a film festival.
+              </p>
+            </div>
+          </div>
 
-        <section class="mb-12">
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">What You'll Find Here</h2>
-          <ul>
-            <li><strong>Detailed Trip Reports:</strong> In-depth accounts of each climb with route information, conditions, and personal experiences</li>
-            <li><strong>Photography:</strong> High-quality images capturing the beauty and challenge of each peak</li>
-            <li><strong>Video Content:</strong> Links to YouTube videos documenting key moments and summits</li>
-            <li><strong>Practical Information:</strong> Tips, gear recommendations, and logistical advice for fellow adventurers</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">The Adventure Continues</h2>
-          <p>
-            Each peak we conquer together brings new perspectives, challenges overcome, and memories made as a team. 
-            Follow along as we work toward completing this ambitious goal, supporting each other every step of the way, 
-            one summit at a time.
-          </p>
-        </section>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="content-section bg-mountain-50 dark:bg-mountain-900">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <h2 class="section-heading">Our Mission</h2>
+        <div class="text-center">
+                     <p class="text-xl leading-relaxed text-mountain-600 dark:text-mountain-400">
+             Our goal is simple: complete all 27 peaks before we both turn 27. This blog documents 
+             every summit, challenge, and memory we make along the way.
+           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- What You'll Find Section -->
+    <section class="content-section">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <h2 class="section-heading">What You'll Find Here</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Trip Reports Card -->
+          <div class="card text-center p-8 group hover:shadow-card-lg transition-all duration-300">
+            <div class="mx-auto mb-6 w-16 h-16 rounded-full bg-summit-100 dark:bg-summit-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-8 h-8 text-summit-600 dark:text-summit-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-mountain-900 dark:text-mountain-100">Detailed Trip Reports</h3>
+            <p class="text-mountain-600 dark:text-mountain-400">
+              In-depth accounts of each climb with route information, conditions, and personal experiences
+            </p>
+          </div>
+
+          <!-- Photography Card -->
+          <div class="card text-center p-8 group hover:shadow-card-lg transition-all duration-300">
+            <div class="mx-auto mb-6 w-16 h-16 rounded-full bg-earth-100 dark:bg-earth-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-8 h-8 text-earth-600 dark:text-earth-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-mountain-900 dark:text-mountain-100">Photography</h3>
+            <p class="text-mountain-600 dark:text-mountain-400">
+              High-quality images capturing the beauty and challenge of each peak
+            </p>
+          </div>
+
+          <!-- Video Content Card -->
+          <div class="card text-center p-8 group hover:shadow-card-lg transition-all duration-300">
+            <div class="mx-auto mb-6 w-16 h-16 rounded-full bg-fire-100 dark:bg-fire-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-8 h-8 text-fire-600 dark:text-fire-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l-3 3-3-3"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-mountain-900 dark:text-mountain-100">Video Content</h3>
+            <p class="text-mountain-600 dark:text-mountain-400">
+              Links to YouTube videos documenting key moments and summits
+            </p>
+          </div>
+
+          <!-- Practical Info Card -->
+          <div class="card text-center p-8 group hover:shadow-card-lg transition-all duration-300">
+            <div class="mx-auto mb-6 w-16 h-16 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <svg class="w-8 h-8 text-forest-600 dark:text-forest-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3 text-mountain-900 dark:text-mountain-100">Practical Information</h3>
+            <p class="text-mountain-600 dark:text-mountain-400">
+              Tips, gear recommendations, and logistical advice for fellow adventurers
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Adventure Continues Section -->
+    <section class="content-section bg-mountain-50 dark:bg-mountain-900">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <h2 class="section-heading">The Adventure Continues</h2>
+        <div class="text-center">
+          <p class="text-xl leading-relaxed text-mountain-600 dark:text-mountain-400 mb-8">
+            Each peak we conquer together brings new perspectives, challenges overcome, and memories
+            made as a team. Follow along as we work toward completing this ambitious goal,
+            supporting each other every step of the way, one summit at a time.
+          </p>
+          
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="/peaks" class="btn-primary text-lg px-8 py-4">
+              Explore Adventures
+            </a>
+            <a href="/" class="btn-secondary text-lg px-8 py-4">
+              View Progress
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <Footer />
@@ -78,7 +211,7 @@ import Footer from '../components/Footer.astro';
     word-spacing: 0.1em;
     line-height: 1.7;
   }
-  
+
   /* For browsers that support text-wrap: pretty, use it for better line breaking */
   @supports (text-wrap: pretty) {
     .prose p,
@@ -86,9 +219,9 @@ import Footer from '../components/Footer.astro';
       text-wrap: pretty;
     }
   }
-  
+
   /* Additional spacing adjustments */
   .prose p {
     margin-bottom: 1.5em;
   }
-</style> 
+</style>

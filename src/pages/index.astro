@@ -6,57 +6,383 @@ import { getCollection } from 'astro:content';
 
 const peaks = await getCollection('peaks');
 const featuredPeaks = peaks.filter(peak => peak.data.featured);
+const totalPeaks = peaks.length;
+const completedPeaks = peaks.filter(peak => !peak.data.draft).length;
 ---
 
-<Layout title="EU Peaks - Documenting Europe's Highest Summits">
+<Layout title="27 Before 27 - Conquering Europe's Highest Peaks">
   <Navigation />
-  
+
   <main class="min-h-screen">
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6">
-          EU Peaks Adventure
-        </h1>
-        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-          Join me as I document the journey to conquer the highest peak in every European Union country
-        </p>
-        <a href="/peaks" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-          Explore Adventures
-        </a>
+    <!-- Enhanced Hero Section -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0" id="heroContainer">
+        <img 
+          src="/images/hero/IMG_1389.jpeg" 
+          alt="Stunning mountain landscape with rocky terrain and distant peaks under blue sky"
+          class="hero-image w-full h-full object-cover opacity-100"
+          id="heroImage"
+        />
+        <img 
+          src="/images/hero/IMG_6787.jpeg" 
+          alt="Beautiful mountain vista with alpine scenery"
+          class="hero-image w-full h-full object-cover opacity-0 absolute inset-0"
+          id="heroImage2"
+        />
+        <img 
+          src="/images/hero/IMG_7870.JPG" 
+          alt="Dramatic mountain peaks and valleys"
+          class="hero-image w-full h-full object-cover opacity-0 absolute inset-0"
+          id="heroImage3"
+        />
+        <img 
+          src="/images/hero/IMG_8073.JPG" 
+          alt="Scenic mountain landscape view"
+          class="hero-image w-full h-full object-cover opacity-0 absolute inset-0"
+          id="heroImage4"
+        />
+        <img 
+          src="/images/hero/IMG_7989.JPG" 
+          alt="Majestic mountain terrain"
+          class="hero-image w-full h-full object-cover opacity-0 absolute inset-0"
+          id="heroImage5"
+        />
+        <img 
+          src="/images/hero/IMG_2776.JPG" 
+          alt="Winter mountain adventure with hikers in snowy conditions"
+          class="hero-image w-full h-full object-cover opacity-0 absolute inset-0"
+          id="heroImage6"
+        />
+        
+
+ 
+        <div class="absolute inset-0 bg-black/40"></div>
+      </div>
+        <div class="relative mx-auto max-w-7xl px-4 py-24 lg:py-32 sm:px-6 lg:px-8">
+          <div class="text-center text-white">
+            <h1 class="mb-6 font-bold tracking-tight text-white">
+              <span class="block drop-shadow-lg">27 Before 27</span>
+            </h1>
+                          <p class="mx-auto mb-8 max-w-3xl text-xl lg:text-2xl leading-relaxed text-mountain-100">
+                Join us on our journey to conquer the highest peaks in every European Union country before we reach the age of 27.
+              </p>
+            
+            <!-- Progress Section -->
+            <div class="mb-10 max-w-2xl mx-auto">
+              <div class="text-center mb-6">
+                <div class="text-5xl lg:text-6xl font-bold text-summit-200 mb-2">16 <span class="text-3xl lg:text-4xl text-mountain-200">/ 27</span></div>
+                <div class="text-lg lg:text-xl text-mountain-200 mb-6">Peaks Summitted</div>
+                
+                <!-- Progress Bar -->
+                <div class="relative" id="progressContainer">
+                  <div class="w-full bg-black/30 rounded-full h-3 lg:h-4 overflow-visible shadow-inner" 
+                       id="progressBar">
+                    <div class="bg-gradient-to-r from-summit-400 to-summit-300 h-full rounded-full shadow-lg transition-all duration-1000 ease-out" 
+                         style="width: 59.26%"
+                         data-progress="16"
+                         data-total="27">
+                    </div>
+                  </div>
+                  
+                  <!-- Peak Markers -->
+                  <div class="absolute inset-0 h-3 lg:h-4">
+                    <!-- Peak 1: Mythikas -->
+                    <div class="peak-marker" style="left: 3.7%" data-peak="Mythikas" data-country="Greece"></div>
+                    <!-- Peak 2: Zugspitze -->
+                    <div class="peak-marker" style="left: 7.4%" data-peak="Zugspitze" data-country="Germany"></div>
+                    <!-- Peak 3: Teide -->
+                    <div class="peak-marker" style="left: 11.1%" data-peak="Teide" data-country="Spain"></div>
+                    <!-- Peak 4: Musala -->
+                    <div class="peak-marker" style="left: 14.8%" data-peak="Musala" data-country="Bulgaria"></div>
+                    <!-- Peak 5: Moldoveanu -->
+                    <div class="peak-marker" style="left: 18.5%" data-peak="Moldoveanu" data-country="Romania"></div>
+                    <!-- Peak 6: Møllehøj -->
+                    <div class="peak-marker" style="left: 22.2%" data-peak="Møllehøj" data-country="Denmark"></div>
+                    <!-- Peak 7: Ta' Dmejrek -->
+                    <div class="peak-marker" style="left: 25.9%" data-peak="Ta' Dmejrek" data-country="Malta"></div>
+                    <!-- Peak 8: Vaalserberg -->
+                    <div class="peak-marker" style="left: 29.6%" data-peak="Vaalserberg" data-country="Netherlands"></div>
+                    <!-- Peak 9: Signal de Botrange -->
+                    <div class="peak-marker" style="left: 33.3%" data-peak="Signal de Botrange" data-country="Belgium"></div>
+                    <!-- Peak 10: Kneiff -->
+                    <div class="peak-marker" style="left: 37%" data-peak="Kneiff" data-country="Luxembourg"></div>
+                    <!-- Peak 11: Dinara -->
+                    <div class="peak-marker" style="left: 40.7%" data-peak="Dinara" data-country="Croatia"></div>
+                    <!-- Peak 12: Kebnekaise -->
+                    <div class="peak-marker" style="left: 44.4%" data-peak="Kebnekaise" data-country="Sweden"></div>
+                    <!-- Peak 13: Halti -->
+                    <div class="peak-marker" style="left: 48.1%" data-peak="Halti" data-country="Finland"></div>
+                    <!-- Peak 14: Kékes -->
+                    <div class="peak-marker" style="left: 51.8%" data-peak="Kékes" data-country="Hungary"></div>
+                    <!-- Peak 15: Pico -->
+                    <div class="peak-marker" style="left: 55.5%" data-peak="Pico" data-country="Portugal"></div>
+                    <!-- Peak 16: Sněžka -->
+                    <div class="peak-marker" style="left: 59.2%" data-peak="Sněžka" data-country="Czech Republic"></div>
+                  </div>
+                  
+                  <div class="absolute -top-6 left-0 w-full text-xs text-mountain-300">
+                    <span class="absolute left-0 text-xs">0</span>
+                    <span class="absolute text-summit-200 font-semibold text-sm bg-black/50 px-2 py-1 rounded" style="left: 59.26%; transform: translateX(-50%);">16</span>
+                    <span class="absolute right-0 text-xs">27</span>
+                  </div>
+                  
+                  <!-- Individual Peak Tooltip -->
+                  <div id="peakTooltip" class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-4 bg-black/90 text-white rounded-lg px-3 py-2 shadow-lg opacity-0 pointer-events-none transition-all duration-200 z-20 whitespace-nowrap">
+                    <div class="text-sm font-semibold" id="peakName"></div>
+                    <div class="text-xs text-mountain-300" id="peakCountry"></div>
+                    <!-- Arrow pointing down -->
+                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-black/90"></div>
+                  </div>
+                </div>
+                
+                <div class="text-sm text-mountain-300 mt-4">
+                  <span class="text-summit-200 font-semibold">59%</span> complete • 
+                  <span class="text-mountain-200">11 remaining</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a href="/peaks" class="btn-primary text-lg px-8 py-4">
+                Adventure Log
+              </a>
+              <a href="/about" class="btn-secondary text-lg px-8 py-4 bg-white/10 border-white/30 text-white hover:bg-white/20">
+                Our Story
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Featured Peaks -->
-    <section class="py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12">Featured Adventures</h2>
+    <!-- Mission Statement -->
+    <section class="content-section bg-mountain-50 dark:bg-mountain-900">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="section-heading">The Mission</h2>
+        <p class="text-xl leading-relaxed text-mountain-600 dark:text-mountain-400">
+          Every peak tells a story. Every summit offers a new perspective. Through detailed documentation, 
+          stunning photography, and honest accounts of both triumphs and challenges, this project aims to 
+          inspire others to pursue their own adventures while respecting the natural world we explore.
+        </p>
+      </div>
+    </section>
+
+    <!-- Featured Adventures -->
+    <section class="content-section">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 class="section-heading">Featured Adventures</h2>
+
+        {
+          featuredPeaks.length === 0 ? (
+            <div class="text-center">
+              <div class="mx-auto mb-6 w-24 h-24 rounded-full bg-mountain-100 dark:bg-mountain-800 flex items-center justify-center">
+                <svg class="w-12 h-12 text-mountain-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l5.586 5.586a2 2 0 002.828 0L19 3m-7 7v6m-2 4h4"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2 text-mountain-900 dark:text-mountain-100">Adventures Coming Soon</h3>
+              <p class="text-mountain-600 dark:text-mountain-400 max-w-md mx-auto">
+                Exciting peak conquests are in the works. Check back soon for detailed accounts of European summit adventures.
+              </p>
+            </div>
+          ) : (
+            <div class="grid-cards">
+              {featuredPeaks.map(peak => (
+                <article class="group">
+                  <a href={`/peaks/${peak.slug}`} class="block">
+                    <div class="card overflow-hidden group-hover:shadow-card-lg transition-shadow duration-300">
+                      {peak.data.thumbnail_image ? (
+                        <div class="relative h-48 lg:h-56 overflow-hidden">
+                          <img 
+                            src={peak.data.thumbnail_image} 
+                            alt={`${peak.data.title} - ${peak.data.country}`}
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            style={peak.data.thumbnail_position ? `object-position: ${peak.data.thumbnail_position.replace(',', '% ') + '%'}` : ''}
+                          />
+                          <div class="image-overlay"></div>
+                          <div class="absolute bottom-4 left-4 text-white">
+                            <div class="text-sm font-medium bg-black/50 px-2 py-1 rounded">
+                              {peak.data.elevation_m}m
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div class="h-48 lg:h-56 bg-gradient-to-br from-mountain-200 to-mountain-300 dark:from-mountain-700 dark:to-mountain-800 flex items-center justify-center">
+                          <svg class="w-16 h-16 text-mountain-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3l5.586 5.586a2 2 0 002.828 0L19 3m-7 7v6m-2 4h4"></path>
+                          </svg>
+                        </div>
+                      )}
+                      
+                      <div class="card-content">
+                        <h3 class="text-xl font-semibold mb-2 group-hover:text-summit-600 transition-colors">
+                          {peak.data.title}
+                        </h3>
+                        <div class="flex items-center justify-between mb-3">
+                          <span class="text-mountain-600 dark:text-mountain-400 font-medium">
+                            {peak.data.country}
+                          </span>
+                          <span class="text-sm text-mountain-500 dark:text-mountain-500 bg-mountain-100 dark:bg-mountain-700 px-2 py-1 rounded">
+                            {peak.data.difficulty_rating}
+                          </span>
+                        </div>
+                        {peak.data.description && (
+                          <p class="text-sm text-mountain-600 dark:text-mountain-400 line-clamp-2">
+                            {peak.data.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              ))}
+            </div>
+          )
+        }
         
-        {featuredPeaks.length === 0 ? (
-          <div class="text-center text-gray-600 dark:text-gray-400">
-            <p class="text-lg">Adventures coming soon! Check back for exciting peak conquests.</p>
-          </div>
-        ) : (
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredPeaks.map((peak) => (
-              <a href={`/peaks/${peak.slug}`} class="group">
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                  <div class="h-48 bg-gray-200 dark:bg-gray-700"></div>
-                  <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2 group-hover:text-blue-600 transition-colors">
-                      {peak.data.title}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-400 mb-2">{peak.data.country}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-500">{peak.data.elevation}m elevation</p>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
+
       </div>
     </section>
   </main>
 
   <Footer />
 </Layout>
+
+<style>
+  .hero-image {
+    transform: scale(1);
+    transition: opacity 1.5s ease-in-out;
+    filter: blur(1.5px);
+    object-position: center 70%;
+  }
+  
+  @keyframes continuousZoom {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .hero-image.zoom-active {
+    animation: continuousZoom 80s linear infinite;
+  }
+
+  .peak-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: white;
+    border: 2px solid #fbbf24;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .peak-marker:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+    background: #fbbf24;
+    border-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  @media (min-width: 1024px) {
+    .peak-marker {
+      width: 10px;
+      height: 10px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+         // Hero slideshow functionality
+     const heroImages = [
+       document.getElementById('heroImage'),
+       document.getElementById('heroImage2'),
+       document.getElementById('heroImage3'),
+       document.getElementById('heroImage4'),
+       document.getElementById('heroImage5'),
+       document.getElementById('heroImage6')
+     ].filter(img => img !== null);
+    
+    let currentImageIndex = 0;
+    
+    if (heroImages.length > 0) {
+      // Start continuous zoom animation on all images
+      heroImages.forEach(img => {
+        img.classList.add('zoom-active');
+      });
+      
+      // Function to transition to next image
+      function transitionToNextImage() {
+        const currentImage = heroImages[currentImageIndex];
+        const nextIndex = (currentImageIndex + 1) % heroImages.length;
+        const nextImage = heroImages[nextIndex];
+        
+        if (currentImage && nextImage) {
+          // Fade out current image
+          currentImage.style.opacity = '0';
+          
+          // Fade in next image
+          nextImage.style.opacity = '1';
+          
+          currentImageIndex = nextIndex;
+        }
+      }
+      
+      // Start slideshow after initial delay
+      setTimeout(() => {
+        setInterval(transitionToNextImage, 5000); // Change image every 5 seconds
+      }, 5000); // Wait 5 seconds before starting transitions
+    }
+
+    // Peak marker tooltip functionality
+    const peakMarkers = document.querySelectorAll('.peak-marker');
+    const peakTooltip = document.getElementById('peakTooltip');
+    const peakName = document.getElementById('peakName');
+    const peakCountry = document.getElementById('peakCountry');
+    
+         if (peakMarkers.length > 0 && peakTooltip && peakName && peakCountry) {
+       peakMarkers.forEach((marker) => {
+         marker.addEventListener('mouseenter', () => {
+           const peak = marker.getAttribute('data-peak');
+           const country = marker.getAttribute('data-country');
+           
+           if (peak && country) {
+             peakName.textContent = peak;
+             peakCountry.textContent = country;
+             
+             // Position tooltip above the hovered marker
+             const rect = marker.getBoundingClientRect();
+             const containerRect = document.getElementById('progressContainer')?.getBoundingClientRect();
+             
+             if (containerRect) {
+               const relativeLeft = rect.left - containerRect.left + (rect.width / 2);
+               peakTooltip.style.left = `${relativeLeft}px`;
+               peakTooltip.style.transform = 'translateX(-50%) translateY(-8px)';
+             }
+             
+             peakTooltip.style.opacity = '1';
+             peakTooltip.style.pointerEvents = 'auto';
+           }
+         });
+         
+         marker.addEventListener('mouseleave', () => {
+           peakTooltip.style.opacity = '0';
+           peakTooltip.style.pointerEvents = 'none';
+           peakTooltip.style.transform = 'translateX(-50%) translateY(0)';
+         });
+       });
+     }
+  });
+</script>

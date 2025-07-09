@@ -1,3 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-white text-mountain-900 dark:bg-mountain-900 dark:text-mountain-50;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold text-mountain-900 dark:text-mountain-50;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl leading-tight;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl leading-tight;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl leading-tight;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl leading-tight;
+  }
+  
+  p {
+    @apply text-base leading-relaxed text-mountain-700 dark:text-mountain-300;
+  }
+  
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-summit-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-summit-700 focus:outline-none focus:ring-2 focus:ring-summit-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center bg-white text-summit-600 border border-summit-600 px-6 py-3 rounded-lg font-medium hover:bg-summit-50 focus:outline-none focus:ring-2 focus:ring-summit-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-mountain-800 rounded-lg shadow-card hover:shadow-card-hover transition-shadow duration-200 border border-mountain-200 dark:border-mountain-700;
+  }
+  
+  .card-content {
+    @apply p-6;
+  }
+  
+  .hero-gradient {
+    @apply bg-gradient-to-br from-mountain-800 via-mountain-700 to-summit-800;
+  }
+  
+  .content-section {
+    @apply py-16 lg:py-24;
+  }
+  
+  .section-heading {
+    @apply text-3xl md:text-4xl font-bold text-center mb-12 text-mountain-900 dark:text-mountain-50;
+  }
+  
+  .grid-cards {
+    @apply grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .image-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent;
+  }
+  
+  /* Article content images - scaled down for better reading experience */
+  .prose img {
+    max-height: 400px;
+    width: auto;
+    object-fit: contain;
+    margin: 1.5rem auto;
+    display: block;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dark .prose img {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+}

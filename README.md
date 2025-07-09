@@ -1,6 +1,7 @@
 # 🏔️ EU Peaks Blog
 
-A secure, privacy-focused blog documenting climbs to the highest peaks in every EU country. Built with Astro, TypeScript, and modern web security practices.
+A secure, privacy-focused blog documenting climbs to the highest peaks in every
+EU country. Built with Astro, TypeScript, and modern web security practices.
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://app.netlify.com/sites/your-site/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -10,6 +11,7 @@ A secure, privacy-focused blog documenting climbs to the highest peaks in every 
 ## ✨ Features
 
 ### 🔒 Security First
+
 - **No login required** - Fully accessible to all visitors
 - **Privacy-focused analytics** with GDPR compliance and opt-out controls
 - **Content Security Policy** with strict headers
@@ -18,6 +20,7 @@ A secure, privacy-focused blog documenting climbs to the highest peaks in every 
 - **XSS and injection protection** throughout the application
 
 ### 🎯 User Experience
+
 - **Mobile-first responsive design** with dark mode support
 - **Accessible** (WCAG AA compliant) with keyboard navigation
 - **Fast loading** with image optimization and lazy loading
@@ -25,12 +28,14 @@ A secure, privacy-focused blog documenting climbs to the highest peaks in every 
 - **Progressive enhancement** - works without JavaScript
 
 ### 📊 Privacy Analytics
+
 - **Anonymous usage tracking** (optional, with user consent)
 - **No personal data collection** - respects user privacy
 - **Interactive privacy controls** - users can opt in/out anytime
 - **GDPR compliant** with transparent data practices
 
 ### 🗺️ Content Management
+
 - **Comprehensive peak data** with GPS coordinates, elevation, difficulty
 - **Content Collections** powered by Astro and Zod validation
 - **Search functionality** with filters by country, difficulty, tags
@@ -38,7 +43,8 @@ A secure, privacy-focused blog documenting climbs to the highest peaks in every 
 
 ## 🚀 Tech Stack
 
-- **[Astro](https://astro.build/)** - Static site generator with island architecture
+- **[Astro](https://astro.build/)** - Static site generator with island
+  architecture
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
 - **[TailwindCSS](https://tailwindcss.com/)** - Utility-first CSS framework
 - **[Zod](https://zod.dev/)** - Runtime type validation for content
@@ -79,23 +85,27 @@ eu-peaks-blog/
 ## 🛠️ Setup & Development
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or yarn
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/nixtur00/eu-peaks-blog.git
    cd eu-peaks-blog
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -123,30 +133,31 @@ npm run astro        # Run Astro CLI commands
 
 ```yaml
 ---
-title: "Mont Blanc"
-date: "2024-08-15"
-country: "France"
-peak_name: "Mont Blanc"
+title: 'Mont Blanc'
+date: '2024-08-15'
+country: 'France'
+peak_name: 'Mont Blanc'
 elevation_m: 4808
 gps_coords: [45.8326, 6.8652]
-difficulty_rating: "Expert"
-ascent_type: "Mixed"
-tags: ["Alps", "Mountaineering", "Technical"]
-featured_image: "/images/france/mont-blanc.jpg"
-description: "The highest peak in Western Europe"
+difficulty_rating: 'Expert'
+ascent_type: 'Mixed'
+tags: ['Alps', 'Mountaineering', 'Technical']
+featured_image: '/images/france/mont-blanc.jpg'
+description: 'The highest peak in Western Europe'
 duration_hours: 12
 distance_km: 20
-gear_required: ["Crampons", "Ice axe", "Helmet"]
-best_season: ["June", "July", "August", "September"]
+gear_required: ['Crampons', 'Ice axe', 'Helmet']
+best_season: ['June', 'July', 'August', 'September']
 permits_required: false
 ---
-
 # Your climb story here...
 ```
 
 ### Content Validation
 
-All content is validated using Zod schemas defined in `src/content/config.ts`. This ensures:
+All content is validated using Zod schemas defined in `src/content/config.ts`.
+This ensures:
+
 - Required fields are present
 - Data types are correct
 - GPS coordinates are valid
@@ -155,17 +166,20 @@ All content is validated using Zod schemas defined in `src/content/config.ts`. T
 ## 🔐 Security Features
 
 ### Input Validation
+
 - All user inputs are sanitized and validated
 - Zod schemas enforce data integrity
 - Rate limiting prevents API abuse
 
 ### Content Security
+
 - Strict Content Security Policy
 - Image source validation
 - XSS protection throughout
 - No third-party tracking scripts
 
 ### Privacy Protection
+
 - Minimal data collection
 - Anonymous analytics only
 - User consent required
@@ -176,6 +190,7 @@ All content is validated using Zod schemas defined in `src/content/config.ts`. T
 ### Netlify (Recommended)
 
 1. **Push to GitHub**
+
    ```bash
    git push origin main
    ```
@@ -187,6 +202,7 @@ All content is validated using Zod schemas defined in `src/content/config.ts`. T
    - The `netlify.toml` file handles the rest!
 
 ### Other Platforms
+
 - **Vercel**: Works out of the box
 - **GitHub Pages**: Static files only (APIs won't work)
 - **Cloudflare Pages**: Full support with Workers
@@ -201,6 +217,7 @@ This project implements privacy-focused analytics:
 - **GDPR compliant** - Respects all privacy regulations
 
 Analytics data collected (with consent):
+
 - Page views (anonymous)
 - Performance metrics
 - General location (country/region)
@@ -209,12 +226,14 @@ Analytics data collected (with consent):
 ## 🎨 Customization
 
 ### Styling
+
 - Built with TailwindCSS for easy customization
 - Dark mode support included
 - Responsive design patterns
 - Custom color schemes in `tailwind.config.js`
 
 ### Content
+
 - Easily add new countries and peaks
 - Customizable difficulty ratings
 - Flexible metadata fields
@@ -232,11 +251,13 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
+for details.
 
 ## 👤 Author
 
 **Nikolay Demerdzhiev**
+
 - Documenting the journey to summit the highest peak in every EU country
 - Focus on safety, preparation, and environmental responsibility
 
@@ -257,4 +278,4 @@ Track the journey across all 27 EU countries:
 
 ---
 
-*Built with ❤️ for mountain enthusiasts and privacy advocates*
+_Built with ❤️ for mountain enthusiasts and privacy advocates_

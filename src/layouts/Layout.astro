@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import { setupGlobalErrorHandling } from '../utils/errorHandling';
 
 export interface Props {
   title: string;
@@ -11,13 +10,13 @@ export interface Props {
   structuredData?: object;
 }
 
-const { 
-  title, 
-  description = "Documenting the highest peaks of every EU country by Nikolay Demerdzhiev", 
-  image = "/images/og-default.jpg",
+const {
+  title,
+  description = 'Documenting the highest peaks of every EU country by Nikolay Demerdzhiev',
+  image = '/images/og-default.jpg',
   canonical,
   noindex = false,
-  structuredData
+  structuredData,
 } = Astro.props;
 
 // Sanitize inputs for security
@@ -25,149 +24,173 @@ const safeTitle = title.replace(/<[^>]*>/g, '').trim();
 const safeDescription = description.replace(/<[^>]*>/g, '').trim();
 
 // Generate canonical URL
-const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.site || 'https://eu-peaks.blog').href;
+const canonicalUrl =
+  canonical || new URL(Astro.url.pathname, Astro.site || 'https://eu-peaks.blog').href;
 
 // SEO optimization
 const fullTitle = safeTitle.includes('EU Peaks') ? safeTitle : `${safeTitle} | EU Peaks Blog`;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
-    
+
     <!-- Core meta tags -->
     <meta name="description" content={safeDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="author" content="Nikolay Demerdzhiev" />
-    
+
     <!-- SEO meta tags -->
     <title>{fullTitle}</title>
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    
+
     <!-- Open Graph meta tags -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={safeTitle} />
     <meta property="og:description" content={safeDescription} />
-    <meta property="og:image" content={new URL(image, Astro.site || 'https://eu-peaks.blog').href} />
+    <meta
+      property="og:image"
+      content={new URL(image, Astro.site || 'https://eu-peaks.blog').href}
+    />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="EU Peaks Blog" />
     <meta property="og:locale" content="en_US" />
-    
+
     <!-- Twitter Card meta tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={safeTitle} />
     <meta name="twitter:description" content={safeDescription} />
-    <meta name="twitter:image" content={new URL(image, Astro.site || 'https://eu-peaks.blog').href} />
+    <meta
+      name="twitter:image"
+      content={new URL(image, Astro.site || 'https://eu-peaks.blog').href}
+    />
     <meta name="twitter:creator" content="@nikolaydemerdzhiev" />
-    
+
     <!-- Security headers (additional to server-side) -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    
+
     <!-- Performance and caching -->
     <meta http-equiv="Cache-Control" content="public, max-age=3600" />
-    
+
     <!-- Accessibility -->
     <meta name="theme-color" content="#059669" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#065f46" media="(prefers-color-scheme: dark)" />
-    
+
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
-    
+
     <!-- Preload critical resources -->
     <!-- <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin /> -->
-    
+
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="dns-prefetch" href="//images.unsplash.com" />
-    
+
     <!-- Structured Data -->
-    {structuredData && (
-      <script type="application/ld+json" set:html={JSON.stringify({
+    {
+      structuredData && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            name: 'EU Peaks Blog',
+            description:
+              'A comprehensive blog documenting climbs to the highest peaks in every EU country',
+            author: {
+              '@type': 'Person',
+              name: 'Nikolay Demerdzhiev',
+            },
+            url: canonicalUrl,
+            ...structuredData,
+          })}
+        />
+      )
+    }
+
+    <!-- Default structured data for blog -->
+    <script type="application/ld+json">
+      {
         "@context": "https://schema.org",
         "@type": "Blog",
         "name": "EU Peaks Blog",
-        "description": "A comprehensive blog documenting climbs to the highest peaks in every EU country",
+        "description": "Documenting the highest peaks of every EU country",
         "author": {
+          "@type": "Person",
+          "name": "Nikolay Demerdzhiev",
+          "url": "https://eu-peaks.blog/about"
+        },
+        "url": "https://eu-peaks.blog",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://eu-peaks.blog"
+        },
+        "publisher": {
           "@type": "Person",
           "name": "Nikolay Demerdzhiev"
         },
-        "url": canonicalUrl,
-        ...structuredData
-      })} />
-    )}
-    
-    <!-- Default structured data for blog -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": "EU Peaks Blog",
-      "description": "Documenting the highest peaks of every EU country",
-      "author": {
-        "@type": "Person",
-        "name": "Nikolay Demerdzhiev",
-        "url": "https://eu-peaks.blog/about"
-      },
-      "url": "https://eu-peaks.blog",
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://eu-peaks.blog"
-      },
-      "publisher": {
-        "@type": "Person",
-        "name": "Nikolay Demerdzhiev"
-      },
-      "inLanguage": "en-US",
-      "genre": "Adventure Sports, Mountain Climbing, Travel"
-    }
+        "inLanguage": "en-US",
+        "genre": "Adventure Sports, Mountain Climbing, Travel"
+      }
     </script>
   </head>
-  
-  <body class="h-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans antialiased">
+
+  <body
+    class="h-full bg-white font-sans text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100"
+  >
     <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-emerald-600 text-white px-4 py-2 rounded-md z-50">
+    <a
+      href="#main-content"
+      class="sr-only z-50 rounded-md bg-emerald-600 px-4 py-2 text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4"
+    >
       Skip to main content
     </a>
-    
+
     <!-- Main content -->
     <main id="main-content" role="main" class="min-h-full">
       <slot />
     </main>
-    
+
     <!-- Privacy banner -->
-    <div id="privacy-banner" class="hidden fixed bottom-0 left-0 right-0 bg-gray-800 dark:bg-gray-900 text-white p-4 shadow-lg z-40 border-t border-gray-600">
-      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div
+      id="privacy-banner"
+      class="fixed bottom-0 left-0 right-0 z-40 hidden border-t border-gray-600 bg-gray-800 p-4 text-white shadow-lg dark:bg-gray-900"
+    >
+      <div
+        class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
+      >
         <div class="flex-1">
           <p class="text-sm">
-            We use privacy-focused analytics to improve your experience. No personal data is collected.
-            <a href="/privacy" class="underline hover:text-emerald-300 ml-1">Learn more</a>
+            We use privacy-focused analytics to improve your experience. No personal data is
+            collected.
+            <a href="/privacy" class="ml-1 underline hover:text-emerald-300">Learn more</a>
           </p>
         </div>
-        <div class="flex gap-2 flex-shrink-0">
-          <button 
-            id="accept-privacy" 
-            class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded text-sm font-medium transition-colors"
+        <div class="flex flex-shrink-0 gap-2">
+          <button
+            id="accept-privacy"
+            class="rounded bg-emerald-600 px-4 py-2 text-sm font-medium transition-colors hover:bg-emerald-700"
           >
             Accept
           </button>
-          <button 
-            id="decline-privacy" 
-            class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-sm font-medium transition-colors"
+          <button
+            id="decline-privacy"
+            class="rounded bg-gray-600 px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-700"
           >
             Decline
           </button>
         </div>
       </div>
     </div>
-    
+
     <!-- Privacy banner handling -->
     <script>
       // Simple privacy banner without external imports for now
@@ -175,29 +198,29 @@ const fullTitle = safeTitle.includes('EU Peaks') ? safeTitle : `${safeTitle} | E
         const privacyBanner = document.getElementById('privacy-banner');
         const acceptButton = document.getElementById('accept-privacy');
         const declineButton = document.getElementById('decline-privacy');
-        
+
         // Check if user has seen banner
         const hasSeenBanner = localStorage.getItem('privacy-banner-seen');
         if (!hasSeenBanner) {
           privacyBanner?.classList.remove('hidden');
         }
-        
+
         // Handle accept button
         acceptButton?.addEventListener('click', () => {
           localStorage.setItem('privacy-banner-seen', 'true');
           localStorage.removeItem('analytics-opt-out');
           privacyBanner?.classList.add('hidden');
         });
-        
+
         // Handle decline button
         declineButton?.addEventListener('click', () => {
           localStorage.setItem('privacy-banner-seen', 'true');
           localStorage.setItem('analytics-opt-out', 'true');
           privacyBanner?.classList.add('hidden');
         });
-        
+
         // Close banner with Escape key
-        document.addEventListener('keydown', (event) => {
+        document.addEventListener('keydown', event => {
           if (event.key === 'Escape' && !privacyBanner?.classList.contains('hidden')) {
             localStorage.setItem('privacy-banner-seen', 'true');
             localStorage.setItem('analytics-opt-out', 'true');
@@ -206,22 +229,23 @@ const fullTitle = safeTitle.includes('EU Peaks') ? safeTitle : `${safeTitle} | E
         });
       });
     </script>
-    
+
     <!-- Service Worker registration for offline support -->
     <script>
       if ('serviceWorker' in navigator && import.meta.env.PROD) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then(registration => {
               console.log('SW registered: ', registration);
             })
-            .catch((registrationError) => {
+            .catch(registrationError => {
               console.log('SW registration failed: ', registrationError);
             });
         });
       }
     </script>
-    
+
     <!-- Critical CSS for above-the-fold content -->
     <style>
       /* Critical styles for initial render */
@@ -236,7 +260,7 @@ const fullTitle = safeTitle.includes('EU Peaks') ? safeTitle : `${safeTitle} | E
         white-space: nowrap;
         border: 0;
       }
-      
+
       .focus\:not-sr-only:focus {
         position: static;
         width: auto;
@@ -247,38 +271,43 @@ const fullTitle = safeTitle.includes('EU Peaks') ? safeTitle : `${safeTitle} | E
         clip: auto;
         white-space: normal;
       }
-      
+
       /* Use system fonts for now */
       body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
       }
-      
+
       /* Dark mode improvements */
       @media (prefers-color-scheme: dark) {
         html {
           color-scheme: dark;
         }
       }
-      
+
       /* Print styles */
       @media print {
         #privacy-banner {
           display: none !important;
         }
-        
+
         body {
           color: black !important;
           background: white !important;
         }
       }
-      
+
       /* High contrast mode support */
       @media (prefers-contrast: high) {
         body {
           font-weight: 600;
         }
       }
-      
+
       /* Reduced motion support */
       @media (prefers-reduced-motion: reduce) {
         *,
@@ -291,4 +320,4 @@ const fullTitle = safeTitle.includes('EU Peaks') ? safeTitle : `${safeTitle} | E
       }
     </style>
   </body>
-</html> 
+</html>
