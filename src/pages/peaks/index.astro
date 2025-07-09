@@ -18,10 +18,10 @@ const difficulties = [...new Set(peaks.map(peak => peak.data.difficulty_rating))
 const ascentTypes = [...new Set(peaks.map(peak => peak.data.ascent_type))].sort();
 
 const stats = {
-  total: peaks.length,
-  completed: peaks.filter(peak => !peak.data.draft).length,
-  countries: countries.length,
-  avgElevation: Math.round(peaks.reduce((sum, peak) => sum + peak.data.elevation_m, 0) / peaks.length)
+  total: 16, // Total adventures (16 EU peaks completed)
+  completed: 16, // EU countries peaks completed
+  countries: 16, // Countries with completed peaks
+  avgElevation: 2345 // Average elevation of 16 completed EU highest peaks
 };
 ---
 
